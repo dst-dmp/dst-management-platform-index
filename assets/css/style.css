@@ -1007,16 +1007,16 @@ p:last-child {
 
 @media only screen and (max-width: 991px) {
 	.navbar-area {
-		padding-top: 20px;
-		padding-bottom: 20px;
+		padding-top: 0;
+		padding-bottom: 0;
 	}
 
 	.navbar-area.is-sticky {
 		border-bottom: none;
 		-webkit-box-shadow: 0 7px 13px 0 rgba(0, 0, 0, 0.1);
 		box-shadow: 0 7px 13px 0 rgba(0, 0, 0, 0.1);
-		padding-top: 20px;
-		padding-bottom: 20px;
+		padding-top: 0;
+		padding-bottom: 0;
 	}
 
 	.navbar-area.is-sticky .logo .white-logo {
