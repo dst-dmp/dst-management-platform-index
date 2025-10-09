@@ -1,0 +1,731 @@
+/*****************************************************************
+    Template Name    : Trionix - IT Solutions and Corporate Website Template
+    Author           : Barakah Themes
+    Version          : 1.0
+    Created          : 2021
+    File Description : Main Responsive file of the template
+*****************************************************************/
+
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+	.navbar-light .navbar-brand {
+		position: relative;
+		margin-left: 0;
+		margin-right: 0;
+		padding-top: 0;
+		padding-bottom: 0;
+		top: 0;
+		left: 0;
+	}
+
+	.navbar-area.is-sticky .navbar-light .navbar-brand {
+		position: relative;
+		margin-left: 0;
+		margin-right: 0;
+		padding-top: 0;
+		padding-bottom: 0;
+		top: 0;
+		left: 0;
+	}
+	
+	.about-content-text h2 {
+		font-size: 30px;
+	}
+
+	.testimonial-slider.owl-theme .owl-nav [class*=owl-] {
+		left: 0;
+	}
+
+	.testimonial-slider.owl-theme .owl-nav [class*=owl-].owl-next {
+		right: 0;
+	}
+
+	.blog-single-item .blog-description {
+		padding: 20px 16px;
+	}
+
+	.blog-single-item .blog-description .blog-content h3 {
+		font-size: 18px;
+	}
+
+	.blog-single-item .blog-description .blog-list li {
+		font-size: 12px;
+		margin-right: 8px;
+	}
+
+	.blog-single-item .blog-description .blog-list i::before {
+		font-size: 12px;
+	}
+	.overview-content .features-list li span.active {
+		color: #fff;
+		padding-left: 15px;
+	}
+
+	.single-footer-widget .footer-heading h3 {
+		font-size: 18px;
+	}
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+	.section-title span {
+		font-size: 15px;
+	}
+
+	.section-title h3 {
+		font-size: 26px;
+		margin: 5px 0 0 0;
+	}
+
+	.other-option {
+		display: none;
+	}
+
+	.navbar-area.is-sticky .trionix-responsive-nav .mean-container a.meanmenu-reveal {
+		padding-top: 6px;
+		color: #000000;
+	}
+
+	.navbar-area.is-sticky .trionix-responsive-nav .mean-container a.meanmenu-reveal span {
+		background: #000000;
+	}
+
+	.mean-container .mean-nav {
+		margin-top: 43px;
+	}
+
+	.trionix-responsive-nav.index-navber-responsive .mean-container a.meanmenu-reveal {
+		padding-top: 6px;
+		color: #333;
+	}
+	.trionix-responsive-nav .mean-container a.meanmenu-reveal {
+		padding-top: 6px;
+		color: #fff;
+	}
+
+	.trionix-responsive-nav.index-navber-responsive .mean-container a.meanmenu-reveal span {
+		background: #333;
+	}
+	.trionix-responsive-nav .mean-container a.meanmenu-reveal span {
+		background: #fff;
+	}
+
+	.home-area {
+		padding-top: 150px;
+		padding-bottom: 100px;
+		background-position: top right;
+		background-attachment: fixed;
+		height: 100vh;
+	}
+	.home-area .banner-image {
+		text-align: center;
+		padding-top: 40px;
+	}
+	.main-banner-content {
+		margin: auto;
+		text-align: center;
+		padding-top: 30px;
+	}
+
+	.main-banner-content h1 {
+		font-size: 35px;
+		margin: 0 0 15px 0;
+	}
+
+	.main-banner-content .banner-btn {
+		margin-top: 20px;
+	}
+
+	.about-content {
+		margin-right: 0;
+	}
+
+	.about-content-text h2 {
+		font-size: 33px;
+	}
+	.about-image {
+		text-align: center;
+		margin-top: 35px;
+		margin-right: 0;
+	}
+	.about-image:before {
+		display: none;
+	}
+	.about-image img {
+		box-shadow: none;
+	}
+	.blog-image img {
+		width: 100%;
+	}
+
+	.blog-single-item .blog-description {
+		padding: 20px 16px;
+	}
+
+	.blog-single-item .blog-description .blog-content h3 {
+		font-size: 18px;
+	}
+
+	.blog-single-item .blog-description .blog-list li {
+		font-size: 12px;
+		margin-right: 8px;
+	}
+
+	.blog-single-item .blog-description .blog-list i::before {
+		font-size: 12px;
+	}
+	
+	.hire-inside-wrapper {
+		padding: 70px 75px;
+	}
+	
+	.partner-title {
+		margin-bottom: 30px;
+	}
+
+	.partner-list .partner-item {
+		-ms-flex: 0 0 50%;
+		-webkit-box-flex: 0;
+		flex: 0 0 50%;
+		max-width: 50%;
+	}
+
+	.partner-list .partner-item:nth-child(6) {
+		margin-left: 0;
+	}
+	.single-counter {
+		padding: 15px 0;
+	}
+	.hire-content h2 {
+		font-size: 33px;
+	}
+	.hire-content p {
+		font-size: 15px;
+	}
+	.partner-list .partner-item a {
+		padding: 0px 50px;
+	}
+	.contact-information-box-3 {
+		margin-bottom: 50px;
+	}
+	.page-title-area {
+		height: 300px;
+	}
+
+	.page-title-content h2 {
+		font-size: 35px;
+	}
+
+	.page-title-content ul {
+		margin-top: 6px;
+	}
+
+	.services-details-overview {
+		margin-bottom: 0;
+	}
+
+	.services-details-image {
+		margin-top: 20px;
+		margin-bottom: 20px;
+	}
+
+	.projects-details-desc .project-details-info {
+		margin-top: 20px;
+	}
+
+	.projects-details-desc .project-details-info .single-info-box {
+		-ms-flex: 0 0 50%;
+		-webkit-box-flex: 0;
+		flex: 0 0 50%;
+		max-width: 50%;
+		padding-bottom: 10px;
+		margin-bottom: 10px;
+	}
+
+	.widget-area .widget_trionix_posts_thumb .item .info .title {
+		font-size: 16px;
+	}
+
+	.widget-area .widget_search {
+		-webkit-box-shadow: unset;
+		box-shadow: unset;
+		padding: 0;
+	}
+
+	.widget-area .widget_search form.search-top {
+		margin-top: 40px;
+	}
+
+	.widget-area .widget_search form.search-bottom {
+		margin-top: 0;
+	}
+
+	.tagcloud.section-top {
+		margin-bottom: 30px;
+	}
+
+	.tagcloud.section-bottom {
+		margin-bottom: 0;
+	}
+
+	.single-footer-widget {
+		padding: 15px 0;
+	}
+
+	.single-footer-widget .footer-heading {
+		margin-bottom: 12px;
+	}
+
+	.single-footer-widget .footer-heading h2 {
+		font-size: 22px;
+	}
+
+	.single-footer-widget .footer-social {
+		margin-bottom: 20px;
+	}
+
+	.footer-quick-links li:last-child {
+		padding-bottom: 25px;
+	}
+
+	.copyright-area {
+		text-align: left;
+	}
+
+	.copyright-area ul {
+		text-align: right;
+	}
+}
+
+@media only screen and (max-width: 767px) {
+
+	.section-title h2 {
+		font-size: 30px;
+	}
+
+	.section-title h3 {
+		font-size: 26px;
+		margin: 5px 0 0 0;
+	}
+
+	.default-btn-one {
+		margin-right: 0;
+	}
+
+	.other-option {
+		display: none;
+	}
+
+	.navbar-area.is-sticky .trionix-responsive-nav .mean-container a.meanmenu-reveal {
+		padding-top: 6px;
+		color: #000000;
+	}
+
+	.navbar-area.is-sticky .trionix-responsive-nav .mean-container a.meanmenu-reveal span {
+		background: #000000;
+	}
+
+	.mean-container .mean-nav {
+		margin-top: 43px;
+	}
+
+	.trionix-responsive-nav.index-navber-responsive .mean-container a.meanmenu-reveal {
+		padding-top: 8px;
+		color: #333;
+	}
+	.trionix-responsive-nav .mean-container a.meanmenu-reveal {
+		padding-top: 8px;
+		color: #fff;
+	}
+
+	.trionix-responsive-nav.index-navber-responsive .mean-container a.meanmenu-reveal span {
+		background: #333;
+	}
+	.trionix-responsive-nav .mean-container a.meanmenu-reveal span {
+		background: #fff;
+	}
+
+	.main-banner-content {
+		text-align: center;
+		padding-top: 20px;
+	}
+
+	.main-banner-content h1 {
+		font-size: 32px;
+		margin: 0 0 18px 0;
+	}
+
+	.main-banner-content .banner-btn {
+		margin-top: 20px;
+	}
+
+	.home-area {
+		height: 100%;
+		padding-top: 150px;
+		padding-bottom: 100px;
+		background-position: top right;
+		background-attachment: fixed;
+	}
+	.about-content {
+		margin-right: 0;
+	}
+
+	.about-content-text h2 {
+		font-size: 25px;
+	}
+	.about-image {
+		text-align: center;
+		margin-top: 35px;
+		margin-right: 0;
+	}
+	.about-image:before {
+		display: none;
+	}
+	.about-image img {
+		box-shadow: none;
+	}
+	.blog-image img {
+		width: 100%;
+	}
+
+	.blog-single-item .blog-description {
+		padding: 20px 16px;
+	}
+	.blog-single-item .blog-description .blog-list li {
+		font-size: 12px;
+		margin-right: 8px;
+	}
+
+	.blog-single-item .blog-description .blog-list i::before {
+		font-size: 12px;
+	}
+
+	.partner-title {
+		margin-bottom: 30px;
+	}
+
+	.partner-title span {
+		font-size: 15px;
+	}
+
+	.partner-title h3 {
+		font-size: 26px;
+		margin: 5px 0 0 0;
+	}
+
+	.partner-list .partner-item {
+		-ms-flex: 0 0 50%;
+		-webkit-box-flex: 0;
+		flex: 0 0 50%;
+		max-width: 50%;
+	}
+
+	.partner-list .partner-item:nth-child(6) {
+		margin-left: 0;
+	}
+	.newsletter-form button {
+		position: relative;
+		margin-top: 25px;
+		border-radius: 5px;
+	}
+
+	.single-counter {
+		padding: 15px 0;
+	}
+	.single-testimonial {
+		padding: 30px 10px;
+	}
+
+	.hire-content h2 {
+		font-size: 35px;
+	}
+	.hire-content p {
+		font-size: 15px;
+	}
+	.hire-content .hire-btn .hire-btn-one {
+		margin-left: 0;
+	}
+	
+	.partner-list .partner-item a {
+		padding: 0px 15px;
+	}
+	
+	.contact-information-box-3 {
+		margin-bottom: 50px;
+	}
+	.page-title-area {
+		height: 300px;
+	}
+
+	.page-title-content h2 {
+		font-size: 35px;
+	}
+
+	.page-title-content ul {
+		margin-top: 6px;
+	}
+	.pricing-content {
+		padding: 45px 15px;
+	}
+	.services-details-overview {
+		margin-bottom: 0;
+	}
+
+	.services-details-image {
+		margin-top: 20px;
+		margin-bottom: 20px;
+	}
+	
+	.services-step-title h2 {
+		font-size: 24px;
+	}
+	
+	.projects-details-desc .project-details-info {
+		margin-top: 16px;
+	}
+
+	.projects-details-desc .project-details-info .single-info-box {
+		-ms-flex: 0 0 100%;
+		-webkit-box-flex: 0;
+		flex: 0 0 100%;
+		max-width: 100%;
+		padding-bottom: 10px;
+		margin-bottom: 20px;
+	}
+
+	.single-pricing-box .pricing-header h3 {
+		margin-bottom: 4px;
+		font-size: 22px;
+	}
+
+	.single-pricing-box .price {
+		font-size: 40px;
+		margin-bottom: 5px;
+		margin-top: 8px;
+	}
+
+	.woocommerce-result-count {
+		margin-bottom: 20px;
+	}
+
+	.pagination-area {
+		margin-top: 0;
+	}
+
+	.pagination-area .page-numbers {
+		width: 40px;
+		height: 40px;
+		margin: 0px 1px;
+		line-height: 40px;
+		font-size: 15px;
+	}
+
+	.text-right {
+		text-align: center !important;
+		margin-top: 10px;
+	}
+
+	.coming-soon-area {
+		height: 100%;
+		padding-top: 160px;
+		padding-bottom: 150px;
+	}
+
+	.coming-soon-content h1 {
+		margin-bottom: 10px;
+		font-size: 30px;
+	}
+
+	.coming-soon-content #timer div {
+		margin-bottom: 30px;
+	}
+
+	.widget-area .widget_trionix_posts_thumb .item .info .title {
+		font-size: 16px;
+	}
+
+	.widget-area .widget_search {
+		-webkit-box-shadow: unset;
+		box-shadow: unset;
+		padding: 0;
+	}
+
+	.widget-area .widget_search form.search-top {
+		margin-top: 40px;
+	}
+
+	.widget-area .widget_search form.search-bottom {
+		margin-top: 0;
+	}
+
+	.tagcloud.section-top {
+		margin-bottom: 30px;
+	}
+
+	.tagcloud.section-bottom {
+		margin-bottom: 0;
+	}
+
+	.blog-details-desc .article-content h3 {
+		font-size: 20px;
+	}
+	.comments-area .comment-respond .comment-form-author {
+		float: left;
+		width: 100%;
+		padding-right: 0px;
+	}
+	.comments-area .comment-respond .comment-form-email {
+		float: left;
+		width: 100%;
+		padding-left: 0px;
+	}
+	blockquote, .blockquote {
+		padding: 18px !important;
+	}
+
+	blockquote p, .blockquote p {
+		font-size: 16px !important;
+	}
+
+	.single-footer-widget {
+		padding: 15px 0;
+	}
+	
+	.single-footer-widget .footer-heading {
+		margin-bottom: 20px;
+	}
+
+	.single-footer-widget .footer-heading h2 {
+		font-size: 22px;
+	}
+
+	.single-footer-widget .footer-social {
+		margin-bottom: 20px;
+	}
+
+	.footer-quick-links li:last-child {
+		padding-bottom: 25px;
+	}
+
+	.copyright-area {
+		text-align: center;
+	}
+
+	.copyright-area ul {
+		text-align: center;
+	}
+	.slider .parallax-slider .caption {
+		text-align: left;
+		padding-top: 0px;
+	}
+	.project-area .project-list .nav li {
+		margin: 10px 5px;
+	}
+	.blog-details-desc .article-content .wp-block-gallery.columns-3 li {
+		-ms-flex: 0 0 100%;
+		-webkit-box-flex: 0;
+		flex: 0 0 100%;
+		max-width: 100%;
+		padding-right: 10px;
+		padding-left: 10px;
+		margin-bottom: 20px;
+	}
+	.blog-details-desc .article-content .wp-block-gallery.columns-3 li:last-child {
+		margin-bottom: 0px;
+	}
+}
+
+@media only screen and (min-width: 576px) and (max-width: 767px) {
+
+	.footer-quick-links li:last-child {
+		padding-bottom: 0;
+	}
+
+	.project-image img {
+		width: 100%;
+	}
+
+	.text-right {
+		margin-top: 0;
+	}
+
+	.home-area {
+		height: 100%;
+		padding-top: 150px;
+		padding-bottom: 100px;
+		background-position: center;
+		background-attachment: fixed;
+	}
+	
+}
+
+@media only screen and (min-width: 0px) and (max-width: 479px) {
+	.page-title-content h2 {
+		font-size: 28px;
+	}
+	
+	.main-banner-content h1 {
+		font-size: 30px;
+	}
+	.main-banner-content p {
+		font-size: 15px;
+	}
+	.default-btn-one {
+		margin-right: 10px;
+	}
+	.hire-content h2 {
+		font-size: 32px;
+	}
+	.partner-list .partner-item a {
+		padding: 0px 0px;
+	}
+	.blog-details-desc .article-footer .article-tags {
+		-ms-flex: 0 0 100%;
+		-webkit-box-flex: 0;
+		flex: 0 0 100%;
+		max-width: 100%;
+		margin-bottom: 25px;
+	}
+	.blog-details-desc .article-footer .article-share {
+		-ms-flex: 0 0 100%;
+		-webkit-box-flex: 0;
+		flex: 0 0 100%;
+		max-width: 100%;
+	}
+	.blog-details-desc .article-footer .article-share .social {
+		text-align: left;
+	}
+	.comments-area .comment-list .children {
+		padding-left: 0;
+	}
+	.comments-area {
+		padding: 0;
+		box-shadow: none;
+	}
+	.newsletter-form button {
+		position: relative;
+		margin-top: 25px;
+		border-radius: 5px;
+		display: block;
+		width: 100%;
+	}
+	.about-content {
+		margin-right: 0;
+	}
+	.about-content-text h2 {
+		font-size: 25px;
+	}
+	.partner-list .partner-item {
+		-ms-flex: 0 0 100%;
+		-webkit-box-flex: 0;
+		flex: 0 0 100%;
+		max-width: 100%;
+	}
+	.faq-accordion .accordion .accordion-item .accordion-title {
+		font-size: 15px;
+		padding: 25px 0;
+		padding-right: 35px;
+	}
+	
+	.contact-information-box-3 {
+		margin-bottom: 50px;
+	}
+}
