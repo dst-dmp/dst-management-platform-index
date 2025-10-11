@@ -1580,7 +1580,8 @@ p:last-child {
     font-weight: 600;
     -webkit-transition: all 400ms ease-out;
     transition: all 400ms ease-out;
-	text-decoration: underline;
+	text-decoration: none;
+
 }
 
 .single-services-item:hover {
