@@ -131,4 +131,27 @@ $('.testimonial-carousel').owlCarousel({
     }
 });
 
+    $('.ad-carousel').owlCarousel({
+        margin: 50,
+        autoplay: true,
+        autoplayTimeout: 4000,
+        smartSpeed: 800,
+        nav: false,
+        dots: false,
+        autoplayHoverPause: true,
+        loop: true,
+        responsiveClass: true,
+        responsive: {
+            0: {
+                items: 1,
+            },
+            768: {
+                items: 3,
+            },
+            1000: {
+                items: 5,
+            },
+        },
+    });
+
 });
