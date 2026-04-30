@@ -1,596 +1,703 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
-    <!-- Meta Tags -->
     <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
-    <!-- Author -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Miracle">
-    <!-- description -->
-    <meta name="description"
-          content="饥荒管理平台(DMP)，满足一键开服、玩家管理、房间管理、数据统计、定时任务等功能">
-    <!-- keywords -->
-    <meta name="keywords"
-          content="饥荒, 饥荒联机版, Steam, 饥荒管理平台, DMP, 饥荒开服">
-    <!-- Page Title -->
-    <title>饥荒管理平台</title>
-    <!-- Favicon -->
+    <meta name="description" content="饥荒管理平台(DMP) — 满足一键开服、玩家管理、房间管理、数据统计、定时任务等功能">
+    <meta name="keywords" content="饥荒, 饥荒联机版, Steam, 饥荒管理平台, DMP, 饥荒开服, Don't Starve Together">
+    <title>饥荒管理平台 — DMP</title>
     <link href="img/favicon.ico" rel="icon">
-    <!-- Bundle -->
-    <link href="css/bundle.min.css" rel="stylesheet">
-    <!-- Plugin Css -->
-    <link href="css/owl.carousel.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/LineIcons.min.css">
-    <link rel="stylesheet" href="css/jquery.fancybox.min.css">
-    <!-- Style Sheet -->
-    <link href="css/line-awesome.min.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
-    <link href="css/custom.css" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #08080a;
+            --bg-card: #111114;
+            --bg-card-hover: #18181d;
+            --border: rgba(255,255,255,.06);
+            --border-hover: rgba(255,255,255,.12);
+            --text: #f5f5f7;
+            --text-secondary: #a1a1a6;
+            --text-tertiary: #6e6e73;
+            --accent: #8C57FF;
+            --accent-glow: rgba(140,87,255,.18);
+            --accent-soft: rgba(140,87,255,.08);
+            --nav-bg: rgba(18,18,22,.82);
+            --nav-bg-scrolled: rgba(14,14,18,.94);
+            --nav-link-hover: rgba(255,255,255,.06);
+            --btn-secondary-bg: rgba(255,255,255,.05);
+            --btn-secondary-hover: rgba(255,255,255,.08);
+            --card-shadow: rgba(0,0,0,.3);
+            --particle-rgb: 140,87,255;
+            --radius-sm: 12px;
+            --radius: 20px;
+            --radius-lg: 28px;
+            --nav-height: 56px;
+        }
+        [data-theme="light"] {
+            --bg: #f5f5f7;
+            --bg-card: #ffffff;
+            --bg-card-hover: #fafafa;
+            --border: rgba(0,0,0,.06);
+            --border-hover: rgba(0,0,0,.12);
+            --text: #1d1d1f;
+            --text-secondary: #6e6e73;
+            --text-tertiary: #a1a1a6;
+            --accent-glow: rgba(140,87,255,.12);
+            --accent-soft: rgba(140,87,255,.06);
+            --nav-bg: rgba(255,255,255,.78);
+            --nav-bg-scrolled: rgba(255,255,255,.92);
+            --nav-link-hover: rgba(0,0,0,.04);
+            --btn-secondary-bg: rgba(0,0,0,.04);
+            --btn-secondary-hover: rgba(0,0,0,.07);
+            --card-shadow: rgba(0,0,0,.08);
+            --particle-rgb: 120,70,220;
+            color-scheme: light;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+            transition: background .5s ease, color .5s ease;
+        }
+        ::selection { background: var(--accent); color: #fff; }
+
+        /* ─── Canvas Particles ─── */
+        #particles-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0;
+        }
+
+        /* ─── Navigation ─── */
+        .nav {
+            position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
+            z-index: 100; width: calc(100% - 48px); max-width: 720px;
+            height: var(--nav-height);
+            background: var(--nav-bg);
+            backdrop-filter: blur(40px) saturate(200%);
+            -webkit-backdrop-filter: blur(40px) saturate(200%);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 8px 0 24px;
+            transition: all .4s cubic-bezier(.25,.1,.25,1);
+        }
+        .nav.scrolled {
+            background: var(--nav-bg-scrolled);
+            border-color: var(--border-hover);
+            box-shadow: 0 8px 32px rgba(0,0,0,.15);
+        }
+        .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .nav-brand img { height: 28px; width: auto; }
+        .nav-brand span { color: var(--text); font-weight: 600; font-size: 15px; letter-spacing: -.2px; }
+        .nav-links { display: flex; align-items: center; gap: 4px; list-style: none; }
+        .nav-links a {
+            color: var(--text-secondary); text-decoration: none;
+            font-size: 13px; font-weight: 500; padding: 8px 16px;
+            border-radius: 100px; transition: all .25s ease; letter-spacing: -.1px;
+        }
+        .nav-links a:hover { color: var(--text); background: var(--nav-link-hover); }
+        .nav-cta {
+            background: var(--accent); color: #fff !important;
+            font-weight: 600 !important; padding: 8px 20px !important;
+            margin-left: 4px;
+            margin-right: 8px;
+        }
+        .nav-cta:hover { background: #9D6FFF !important; transform: scale(1.03); }
+
+        /* ─── Section Base ─── */
+        section { position: relative; z-index: 1; padding: 120px 24px; }
+        .container { max-width: 1080px; margin: 0 auto; }
+        .section-label {
+            display: inline-block; font-size: 12px; font-weight: 600;
+            letter-spacing: .12em; text-transform: uppercase;
+            color: var(--accent); margin-bottom: 20px;
+        }
+        .section-title {
+            font-size: clamp(32px, 5vw, 56px); font-weight: 700;
+            letter-spacing: -.03em; line-height: 1.12; margin-bottom: 20px;
+        }
+        .section-desc {
+            font-size: 18px; color: var(--text-secondary); max-width: 560px;
+            line-height: 1.7; letter-spacing: -.1px;
+        }
+
+        /* ─── Hero ─── */
+        .hero {
+            min-height: 100vh; display: flex; align-items: center;
+            padding-top: calc(var(--nav-height) + 40px);
+        }
+        .hero .container {
+            display: flex; flex-direction: column; align-items: flex-start;
+            max-width: 880px;
+        }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--accent-soft); border: 1px solid rgba(140,87,255,.15);
+            border-radius: 100px; padding: 6px 18px 6px 8px;
+            font-size: 13px; color: var(--accent); font-weight: 500;
+            margin-bottom: 32px; animation: fadeInUp .8s ease both;
+        }
+        .hero-badge .dot {
+            width: 7px; height: 7px; border-radius: 50%; background: var(--accent);
+            box-shadow: 0 0 8px var(--accent-glow); animation: pulse-dot 2s ease infinite;
+        }
+        @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(1.5)} }
+        .hero h1 {
+            font-size: clamp(40px, 7vw, 80px); font-weight: 700;
+            letter-spacing: -.04em; line-height: 1.05; margin-bottom: 24px;
+            animation: fadeInUp .8s .1s ease both;
+        }
+        .hero h1 .accent { color: var(--accent); }
+        .hero p {
+            font-size: clamp(17px, 2.5vw, 21px); color: var(--text-secondary);
+            max-width: 520px; line-height: 1.6; letter-spacing: -.1px;
+            margin-bottom: 40px; animation: fadeInUp .8s .2s ease both;
+        }
+        .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; animation: fadeInUp .8s .3s ease both; }
+        .btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 14px 28px; border-radius: 100px; font-size: 15px; font-weight: 600;
+            text-decoration: none; letter-spacing: -.2px; transition: all .3s cubic-bezier(.25,.1,.25,1);
+            border: none; cursor: pointer; white-space: nowrap;
+        }
+        .btn-primary { background: var(--accent); color: #fff; }
+        .btn-primary:hover { background: #9D6FFF; transform: translateY(-2px); box-shadow: 0 12px 32px var(--accent-glow); }
+        .btn-secondary {
+            background: var(--btn-secondary-bg); color: var(--text);
+            border: 1px solid var(--border);
+        }
+        .btn-secondary:hover { background: var(--btn-secondary-hover); border-color: var(--border-hover); transform: translateY(-2px); }
+        .btn .arrow { transition: transform .3s ease; }
+        .btn:hover .arrow { transform: translateX(3px); }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ─── Feature Cards ─── */
+        .features { padding-top: 80px; }
+        .features .section-header { text-align: center; margin-bottom: 72px; }
+        .features .section-header .section-desc { margin: 0 auto; }
+        .features-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .feature-card {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 36px 32px;
+            transition: all .4s cubic-bezier(.25,.1,.25,1);
+            position: relative; overflow: hidden;
+        }
+        .feature-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), var(--accent-soft), transparent 70%);
+            opacity: 0; transition: opacity .4s ease;
+        }
+        .feature-card:hover::before { opacity: 1; }
+        .feature-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 60px var(--card-shadow);
+        }
+        .feature-card > * { position: relative; z-index: 1; }
+        .feature-icon {
+            width: 48px; height: 48px; border-radius: var(--radius-sm);
+            background: var(--accent-soft); display: flex; align-items: center; justify-content: center;
+            margin-bottom: 20px; font-size: 22px; color: var(--accent);
+        }
+        .feature-card h3 {
+            font-size: 19px; font-weight: 600; letter-spacing: -.3px;
+            margin-bottom: 10px;
+        }
+        .feature-card p {
+            font-size: 14px; color: var(--text-secondary); line-height: 1.65;
+            letter-spacing: -.1px;
+        }
+
+        /* ─── Projects ─── */
+        .projects .section-header { text-align: center; margin-bottom: 72px; }
+        .projects .section-header .section-desc { margin: 0 auto; }
+        .projects-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .project-card {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 32px;
+            text-decoration: none; color: inherit;
+            transition: all .4s cubic-bezier(.25,.1,.25,1);
+            display: flex; flex-direction: column; gap: 12px;
+            position: relative; overflow: hidden;
+        }
+        .project-card::after {
+            content: ''; position: absolute; top: -1px; left: 20px; right: 20px; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity: 0; transition: opacity .4s ease;
+        }
+        .project-card:hover::after { opacity: 1; }
+        .project-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 60px var(--card-shadow);
+        }
+        .project-card .lang {
+            font-size: 12px; font-weight: 600; letter-spacing: .08em;
+            text-transform: uppercase; color: var(--accent);
+        }
+        .project-card h3 { font-size: 22px; font-weight: 600; letter-spacing: -.3px; }
+        .project-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; flex: 1; }
+        .project-card .link-row {
+            display: flex; align-items: center; gap: 6px;
+            font-size: 14px; font-weight: 500; color: var(--text-tertiary);
+            transition: color .3s ease;
+        }
+        .project-card:hover .link-row { color: var(--accent); }
+
+        /* ─── Docs CTA ─── */
+        .docs-cta { text-align: center; }
+        .docs-card {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius-lg); padding: 72px 48px;
+            position: relative; overflow: hidden;
+            transition: all .4s ease;
+        }
+        .docs-card::before {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(800px circle at 50% 0%, var(--accent-glow), transparent 70%);
+            opacity: .6;
+        }
+        .docs-card > * { position: relative; z-index: 1; }
+        .docs-card .section-title { margin-bottom: 16px; }
+        .docs-card .section-desc { margin: 0 auto 32px; }
+        .docs-card .btn { font-size: 16px; padding: 16px 36px; }
+
+        /* ─── Footer ─── */
+        footer {
+            position: relative; z-index: 1; padding: 56px 24px 40px;
+            border-top: 1px solid var(--border);
+        }
+        footer .footer-inner {
+            max-width: 1080px; margin: 0 auto;
+            display: flex; align-items: center; justify-content: space-between;
+            flex-wrap: wrap; gap: 28px;
+        }
+        footer .footer-copy { font-size: 13px; color: var(--text-tertiary); letter-spacing: -.1px; }
+        footer .footer-partner {
+            display: flex; align-items: center; gap: 12px;
+        }
+        footer .footer-partner span {
+            font-size: 11px; color: var(--text-tertiary); letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+        footer .footer-partner img {
+            height: 36px; width: auto; opacity: .65; transition: opacity .3s ease;
+        }
+        footer .footer-partner a:hover img { opacity: 1; }
+        footer .footer-links { display: flex; gap: 24px; list-style: none; flex-wrap: wrap; }
+        footer .footer-links a {
+            color: var(--text-tertiary); text-decoration: none; font-size: 13px;
+            transition: color .25s ease; letter-spacing: -.1px;
+        }
+        footer .footer-links a:hover { color: var(--text); }
+
+        /* ─── Scroll Reveal ─── */
+        .reveal { opacity: 0; transform: translateY(40px); transition: all .8s cubic-bezier(.25,.1,.25,1); }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        /* ─── Theme Toggle ─── */
+        .theme-toggle {
+            position: fixed; top: 24px; right: 24px;
+            z-index: 110; width: 40px; height: 40px;
+            border-radius: 50%; border: 1px solid var(--border);
+            background: var(--nav-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: all .4s cubic-bezier(.25,.1,.25,1);
+            color: var(--text-secondary);
+        }
+        .theme-toggle:hover {
+            border-color: var(--border-hover); color: var(--text);
+            transform: scale(1.08);
+        }
+        .theme-toggle svg { width: 18px; height: 18px; transition: transform .5s cubic-bezier(.25,.1,.25,1); }
+        .theme-toggle .icon-sun, .theme-toggle .icon-moon {
+            position: absolute; transition: all .5s cubic-bezier(.25,.1,.25,1);
+        }
+        [data-theme="light"] .theme-toggle .icon-moon { opacity: 0; transform: rotate(90deg) scale(.5); }
+        [data-theme="light"] .theme-toggle .icon-sun { opacity: 1; transform: rotate(0) scale(1); }
+        .theme-toggle .icon-sun { opacity: 0; transform: rotate(-90deg) scale(.5); }
+        .theme-toggle .icon-moon { opacity: 1; transform: rotate(0) scale(1); }
+
+        /* ─── Responsive ─── */
+        @media (max-width: 768px) {
+            .nav { width: calc(100% - 32px); padding: 0 6px 0 20px; border-radius: 80px; }
+            .nav-links a { padding: 8px 12px; font-size: 13px; }
+            .nav-brand span { font-size: 14px; }
+            .nav-cta { padding: 8px 16px !important; font-size: 13px !important; }
+            .theme-toggle { top: 24px; }
+            section { padding: 80px 20px; }
+            .hero h1 { font-size: 36px; }
+            .features-grid { grid-template-columns: 1fr; }
+            .projects-grid { grid-template-columns: 1fr; }
+            .docs-card { padding: 48px 24px; }
+            footer .footer-inner { flex-direction: column; text-align: center; }
+        }
+
+        @media (max-width: 480px) {
+            .nav { left: 16px; right: 60px; transform: none; width: auto; }
+            .nav-brand span { font-size: 15px; }
+            .theme-toggle { top: 26px; right: 14px; width: 36px; height: 36px; }
+            .nav-links a:not(.nav-cta) { display: none; }
+            .hero-actions { flex-direction: column; width: 100%; }
+            .hero-actions .btn { justify-content: center; width: 100%; }
+            .section-title { font-size: 28px; }
+        }
+    </style>
 </head>
+<body>
 
-<body data-spy="scroll" data-target=".navbar" data-offset="90">
+<button class="theme-toggle" id="themeToggle" aria-label="切换明暗主题">
+    <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+    </svg>
+    <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+    </svg>
+</button>
 
-<!-- Start Loader -->
-<div class="loader-bg">
-    <div class="loader">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-    </div>
-</div>
-<!-- End Loader -->
+<canvas id="particles-canvas"></canvas>
 
-<!-- Start Header -->
-<header>
-    <!--Navigation-->
-    <nav class="navbar navbar-top-default navbar-expand-lg navbar-simple nav-line">
-        <div class="container">
-            <a href="#slider-area" title="Logo" class="logo scroll fcc">
-                <!--Logo Default-->
-                <img src="img/logo.png" title="logo" alt="logo" class="logo-default">
-                <span style="color: #002450; font-size: 26px; font-weight: 700">饥荒管理平台</span>
+<!-- Navigation -->
+<nav class="nav" id="navbar">
+    <a href="#" class="nav-brand">
+        <img src="img/logo.png" alt="DMP">
+        <span>饥荒管理平台</span>
+    </a>
+    <ul class="nav-links">
+        <li><a href="#features">功能</a></li>
+        <li><a href="#projects">开源</a></li>
+        <li><a href="#preview">预览</a></li>
+        <li><a href="#docs">文档</a></li>
+        <li><a href="https://docs.miraclesses.top/quick-start/" class="nav-cta" target="_blank" rel="noopener">快速上手</a></li>
+    </ul>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-badge">
+            <span class="dot"></span> 开源免费，持续更新
+        </div>
+        <h1>饥荒<span class="accent">联机</span>，<br>从未如此简单。</h1>
+        <p>优雅的饥荒专用服务器管理方案。一键部署，智能运维，让你专注于游戏本身。</p>
+        <div class="hero-actions">
+            <a href="https://docs.miraclesses.top/quick-start/install.html" class="btn btn-primary" target="_blank" rel="noopener">
+                开始部署 <span class="arrow">→</span>
             </a>
-
-            <!--Nav Links-->
-            <div class="collapse navbar-collapse" id="megaone">
-                <div class="navbar-nav ml-auto">
-                    <a class="nav-link scroll line active" href="#slider-area">开始</a>
-                    <a class="nav-link scroll line" href="#about">教程</a>
-                    <a class="nav-link scroll line" href="#prices">项目</a>
-                    <a class="nav-link scroll line" href="#hosting">开源</a>
-                    <a class="nav-link scroll line" href="#testimonials">功能</a>
-                    <a class="nav-link scroll line" href="#blog">致谢</a>
-                    <a class="nav-link scroll line" href="#contact">合作</a>
-                </div>
-            </div>
-        </div>
-
-        <!--Side Menu Button-->
-        <div class="navigation-toggle">
-            <ul class="slider-social toggle-btn my-0">
-                <li>
-                    <a href="javascript:void(0);" class="sidemenu_btn" id="sidemenu_toggle">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-
-    <!--Side Nav-->
-    <div class="side-menu hidden">
-        <div class="inner-wrapper">
-            <span class="btn-close" id="btn_sideNavClose"><i></i><i></i></span>
-            <a href="index.html" title="Logo" class="logo side-logo fcc">
-                <!--Logo Default-->
-                <img src="img/dmp-icon.png" alt="logo">
-                <span style="color: #ffffff; font-size: 22px; font-weight: 700">饥荒管理平台</span>
+            <a href="https://github.com/miracleEverywhere/dst-management-platform-api" class="btn btn-secondary" target="_blank" rel="noopener">
+                GitHub <span class="arrow">↗</span>
             </a>
-            <nav class="side-nav w-100">
-                <ul class="navbar-nav side-navbar">
-                    <li class="nav-item">
-                        <a class="nav-link scroll" href="#slider-area">开始</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link scroll" href="#about">教程</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link scroll" href="#prices">项目</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link scroll" href="#hosting">开源</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link scroll" href="#testimonials">功能</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link scroll" href="#blog">致谢</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link scroll" href="#contact">合作</a>
-                    </li>
-                </ul>
-            </nav>
-
-            <div class="side-footer w-100">
-                <p class="company-about fadeIn">2025 DMP | Made With Love By <a
-                        href="https://github.com/miracleEverywhere" target="_blank">Miracle</a> | MIT</p>
-            </div>
-        </div>
-    </div>
-    <a id="close_side_menu" href="javascript:void(0);"></a>
-</header>
-<!-- End Header -->
-
-<!-- Start Banner -->
-<section id="particles-js" class="p-0 position-relative">
-    <div class="slider-area" id="slider-area">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-12 col-md-6 col-lg-6 text-md-center text-lg-left wow fadeInLeft content-margin"
-                     data-wow-duration="1.5s" data-wow-delay="1.2s">
-                    <div class="area-heading text-center text-lg-left">
-                        <h1 class="main-font text-white font-weight-bold mb-4">一键开启</h1>
-                        <h1 class="main-font text-white font-weight-bold mb-4">你的饥荒之旅</h1>
-                        <p class="text-white alt-font mb-5">
-                            仅需一行代码，即可完成饥荒管理平台安装部署。通过网页操作，实现世界设置、模组配置和玩家管理，真正做到无痛开服</p>
-                        <a href="https://docs.miraclesses.top" target="_blank"
-                           class="btn btn-medium btn-rounded btn-trans-white mb-5">开始部署</a>
-                        <a href="https://github.com/miracleEverywhere/dst-management-platform-api" target="_blank"
-                           class="btn btn-medium btn-rounded btn-trans-white mb-5 ml-2">Github</a>
-                    </div>
-                </div>
-                <div class="col-12 col-md-6 col-lg-6 text-right image-order wow fadeInRight" data-wow-duration="1.5s"
-                     data-wow-delay="1.2s">
-                    <div class="slider-image fcc">
-                        <img src="img/dmp-icon.png" alt="Slider-Image" height="240" width="240"/>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Author Skills -->
-    <div class="author-skills bg-blue">
-        <div class="container">
-            <div class="row text-center text-lg-left">
-                <!-- First Skill -->
-                <div class="col-12 col-md-4 about-media wow zoomIn" data-wow-duration="1.5s" data-wow-delay="1.2s">
-                    <span class="about-icon"><a href="javascript:void(0);"><i class="la la-laptop-code"></i></a></span>
-                    <h4 class="small-heading main-font">一键部署</h4>
-                    <p class="small-text alt-font">完善的启动脚本和Docker部署命令，帮助你更快的搭建管理平台</p>
-                </div>
-                <!-- Second Skill -->
-                <div class="col-12 col-md-4 about-media wow zoomIn" data-wow-duration="1.5s" data-wow-delay="1.5s">
-                    <span class="about-icon"><a href="javascript:void(0);"><i class="lar la-image"></i></a></span>
-                    <h4 class="small-heading main-font">可视化配置</h4>
-                    <p class="small-text alt-font">
-                        如同游戏中开服一样，通过鼠标点击，即可完成世界配置和模组配置，无需输入繁琐的代码</p>
-                </div>
-                <!-- Third Skill -->
-                <div class="col-12 col-md-4 about-media wow zoomIn" data-wow-duration="1.5s" data-wow-delay="1.8s">
-                    <span class="about-icon"><a href="javascript:void(0);"><i class="las la-magic"></i></a></span>
-                    <h4 class="small-heading main-font">定时任务</h4>
-                    <p class="small-text alt-font">定时重启、自动更新、定时宣告等诸多自动化任务，帮你摆脱繁杂的重复事项</p>
-                </div>
-            </div>
         </div>
     </div>
 </section>
-<!-- End Banner -->
 
-<!-- Start About -->
-<section id="about">
-    <div class="container mb-5">
-        <div class="row align-items-center">
-            <!-- About Video -->
-            <div class=" col-sm-12 col-md-6 img-sec mt-5 mt-md-0 wow fadeIn order-2 order-md-1" data-wow-duration="1.5s"
-                 data-wow-delay=".5s">
-                <div class="blue_rectangle"></div>
-                <div class="about_img position-relative">
-                    <img src="img/bilibili.png" alt="About Image">
-
-                </div>
-            </div>
-            <!-- Content -->
-            <div class="col-sm-12 col-md-6 pl-md-5 wow fadeInRight order-1 order-md-1" data-wow-duration="1.5s"
-                 data-wow-delay=".5s">
-                <div class="about-heading">
-                    <p class="text-small alt-font text-red">遇到了问题？</p>
-                    <h1 class="heading margin_heading main-font">点击查看视频教程</h1>
-                    <p class="info">按照视频步骤，即可快速搭建你的饥荒管理平台</p>
-                    <p class="info my-4"></p>
-                    <a href="https://space.bilibili.com/103145652/lists" target="_blank"
-                       class="btn btn-medium btn-rounded btn-blue mt-2">查看视频</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="container mt-5">
-        <div class="row align-items-center">
-            <div class="col-12 col-md-6 wow fadeInLeftBig mt-5" data-wow-delay=".4s">
-                <div class="heading-area">
-                    <h2 class="heading mb-0">在线预览</h2>
-                    <p class="text" style="margin: 40px 0;line-height: 1.6;">用户名：demo 密码：demo</p>
-                    <a href="http://45.192.108.234:8972/" target="_blank"
-                       class="btn btn-medium btn-rounded btn-blue mt-2">点击跳转</a>
-                </div>
-            </div>
-            <div class="col-12 col-md-6 wow fadeIn mt-5" data-wow-delay="1.2s">
-                <div class="img-fluid">
-                    <img src="img/demo.png" alt="demo">
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- End About -->
-
-<!-- Start Learn More -->
-<section class="learn-more-section">
+<!-- Features -->
+<section class="features" id="features">
     <div class="container">
-        <div class="text-area wow fadeInUpBig heading-area" data-wow-delay=".5s">
-            <div class="row">
-                <div class="col-12">
-                    <h2 class="heading text-white">想了解更多关于饥荒管理平台的使用姿势？</h2>
-                    <a href="https://docs.miraclesses.top/docs/" target="_blank"
-                       class="btn btn-medium btn-rounded btn-blue">深度文档</a>
+        <div class="section-header reveal">
+            <div class="section-label">核心能力</div>
+            <h2 class="section-title">你所需要的一切，<br>尽在掌握。</h2>
+            <p class="section-desc">从服务器部署到玩家管理，从数据统计到定时任务 — 每一个环节都经过精心打磨。</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card reveal" style="transition-delay: .1s">
+                <div class="feature-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
                 </div>
+                <h3>一键开服</h3>
+                <p>告别繁琐的命令行配置。通过可视化界面，只需几次点击即可创建并启动你的专属饥荒服务器。</p>
+            </div>
+            <div class="feature-card reveal" style="transition-delay: .2s">
+                <div class="feature-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+                </div>
+                <h3>用户体系</h3>
+                <p>多用户相互隔离，互不影响。细粒度权限配置，精确到每个房间和操作。</p>
+            </div>
+            <div class="feature-card reveal" style="transition-delay: .3s">
+                <div class="feature-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+                </div>
+                <h3>房间管理</h3>
+                <p>多世界、多房间统一调度，灵活的存档备份与恢复机制，让你的游戏世界持久稳固。</p>
+            </div>
+            <div class="feature-card reveal" style="transition-delay: .4s">
+                <div class="feature-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                </div>
+                <h3>数据统计</h3>
+                <p>直观的仪表盘展示服务器运行状态、玩家活跃度趋势，数据驱动你的决策。</p>
+            </div>
+            <div class="feature-card reveal" style="transition-delay: .5s">
+                <div class="feature-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </div>
+                <h3>定时任务</h3>
+                <p>自动备份、定时重启等功能，将重复性操作交给系统，你只需要设定规则。</p>
+            </div>
+            <div class="feature-card reveal" style="transition-delay: .6s">
+                <div class="feature-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+                </div>
+                <h3>实用工具</h3>
+                <p>内置地图预览、定时通知等便捷工具，让游戏和运维更加得心应手。</p>
             </div>
         </div>
     </div>
 </section>
-<!-- End Learn More -->
 
-<!-- Start Pricing -->
-<section id="prices" class="prices padding-up">
+<!-- Projects -->
+<section class="projects" id="projects">
     <div class="container">
-        <!--Heading-->
-        <div class="row text-center">
-            <div class="col-12 col-md-10 col-lg-8 offset-md-1 offset-lg-2 wow zoomIn heading-area"
-                 data-wow-duration="1s" data-wow-delay=".1s">
-                <h3 class="heading text-center">其他项目</h3>
-                <p class="text text-center">饥荒管理平台是有多个项目组合而成的，其中包含前端、后端、桌面App、文档等</p>
-            </div>
+        <div class="section-header reveal">
+            <div class="section-label">开源生态</div>
+            <h2 class="section-title">完全开源，<br>自由掌控。</h2>
+            <p class="section-desc">三个独立仓库，前后端分离架构。MIT 协议，放心使用。</p>
         </div>
-
-        <div class="row padding-top-half">
-            <!-- Price-1 -->
-            <div class="col-12 col-lg-4 wow fadeInLeftBig" data-wow-delay=".4s">
-                <div class="price-item text-center">
-                    <div class="price_header">
-                        <p class="price_header_text">前端项目</p>
-                    </div>
-                    <p class="actual_price">DMP<br><span class="small_font">web</span></p>
-                    <ul class="price-list">
-                        <li>Vue</li>
-                        <li>Pinia</li>
-                        <li>Vue-Router</li>
-                        <li>Vuetify</li>
-                        <li>Vite</li>
-                        <li>Iconify</li>
-                    </ul>
-                    <a href="https://github.com/miracleEverywhere/dst-management-platform-web" target="_blank"
-                       class="btn btn-medium btn-rounded btn-blue-dark-white mb-5">了解更多</a>
-                </div>
-            </div>
-            <!-- Price-2 -->
-            <div class="col-12 col-lg-4 wow fadeIn" data-wow-delay=".8s">
-                <div class="price-item-center text-center">
-                    <div class="price_header-center">
-                        <p class="price_header_text">桌面App项目</p>
-                    </div>
-                    <p class="actual_price">DMP<br><span class="small_font">desktop</span></p>
-                    <ul class="price-list">
-                        <li>Electron</li>
-                        <li>Vue</li>
-                        <li>Pinia</li>
-                        <li>Vue-Router</li>
-                        <li>Vuetify</li>
-                        <li>Vite</li>
-                    </ul>
-                    <a href="https://github.com/miracleEverywhere/dst-management-platform-desktop" target="_blank"
-                       class="btn btn-medium btn-rounded btn-primary mb-5">了解更多</a>
-                </div>
-            </div>
-            <!-- Price-3 -->
-            <div class="col-12 col-lg-4 wow fadeInRightBig" data-wow-delay=".4s">
-                <div class="price-item text-center">
-                    <div class="price_header">
-                        <p class="price_header_text">文档项目</p>
-                    </div>
-                    <p class="actual_price">DMP<br><span class="small_font">docs</span></p>
-                    <ul class="price-list">
-                        <li>VuePress</li>
-                        <li>Theme-Hope</li>
-                        <li>Vue</li>
-                        <li>Vite</li>
-                        <li>Iconify</li>
-                        <li>Markdown</li>
-                    </ul>
-                    <a href="https://github.com/miracleEverywhere/dst-management-platform-docs" target="_blank"
-                       class="btn btn-medium btn-rounded btn-blue-dark-white mb-5">了解更多</a>
-                </div>
-            </div>
+        <div class="projects-grid">
+            <a href="https://github.com/miracleEverywhere/dst-management-platform-web" target="_blank" rel="noopener" class="project-card reveal" style="transition-delay: .1s">
+                <span class="lang">Vue 3 · Vite</span>
+                <h3>前端</h3>
+                <p>基于 Vue 3 + Vite 的现代化管理界面，响应式设计，支持暗色模式。</p>
+                <span class="link-row">查看仓库 <span class="arrow">→</span></span>
+            </a>
+            <a href="https://github.com/miracleEverywhere/dst-management-platform-api" target="_blank" rel="noopener" class="project-card reveal" style="transition-delay: .2s">
+                <span class="lang">Go · Gin</span>
+                <h3>后端</h3>
+                <p>基于 Go 语言的高性能 API 服务，WebSocket 实时通信，完善的权限认证与任务调度系统。</p>
+                <span class="link-row">查看仓库 <span class="arrow">→</span></span>
+            </a>
+            <a href="https://github.com/miracleEverywhere/dst-management-platform-desktop" target="_blank" rel="noopener" class="project-card reveal" style="transition-delay: .3s">
+                <span class="lang">Electron</span>
+                <h3>桌面应用</h3>
+                <p>独立的桌面客户端，同时管理多个平台，跳过繁琐，得心应手。</p>
+                <span class="link-row">查看仓库 <span class="arrow">→</span></span>
+            </a>
         </div>
     </div>
 </section>
-<!-- End Pricing -->
 
-<!-- Start Hosting -->
-<section class="hosting bg-light-white" id="hosting">
+<!-- Preview -->
+<section class="docs-cta" id="preview">
     <div class="container">
-        <div class="row align-items-center">
-            <div class="col-12 col-md-6 wow fadeInLeftBig" data-wow-delay=".4s">
-                <div class="heading-area">
-                    <h2 class="heading mb-0">开源透明</h2>
-                    <p class="text">采用宽松的 MIT 开源协议，并通过Github Actions自动化构建，拒绝一切夹带私货</p>
-                    <a href="https://github.com/miracleEverywhere/dst-management-platform-api?tab=MIT-1-ov-file"
-                       target="_blank" class="btn btn-medium btn-rounded btn-primary">点击查看</a>
+        <div class="docs-card reveal">
+            <div class="section-label">在线预览</div>
+            <h2 class="section-title">先看看，再决定。</h2>
+            <p class="section-desc">使用演示账号快速体验管理平台的基本功能。</p>
+            <div style="display: flex; align-items: center; justify-content: center; gap: 32px; flex-wrap: wrap; margin-bottom: 32px;">
+                <div style="display: flex; align-items: center; gap: 10px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 24px;">
+                    <span style="font-size: 13px; color: var(--text-tertiary);">用户名</span>
+                    <code style="font-size: 16px; font-weight: 600; color: var(--accent); font-family: 'SF Mono', 'Fira Code', monospace;">demo</code>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 24px;">
+                    <span style="font-size: 13px; color: var(--text-tertiary);">密码</span>
+                    <code style="font-size: 16px; font-weight: 600; color: var(--accent); font-family: 'SF Mono', 'Fira Code', monospace;">demo</code>
                 </div>
             </div>
-            <div class="col-12 col-md-6 wow fadeIn" data-wow-delay="1.2s">
-                <div class="img-fluid">
-                    <img src="img/mit.png" alt="image">
-                </div>
-            </div>
+            <a href="http://45.192.108.234:8972" class="btn btn-primary" target="_blank" rel="noopener">
+                点击预览 <span class="arrow">→</span>
+            </a>
         </div>
     </div>
 </section>
-<!-- End Hosting -->
 
-<!-- Start Testimonials -->
-<section class="testimonial-section py-0" id="testimonials">
-    <div class="row no-gutters">
-        <div class="col-lg-6 col-md-12 col-sm-12 text-section wow fadeInLeft" data-wow-delay="300ms">
-            <div class="text-area testimonial-heading">
-                <div class="my-4" style="font-size: 4rem">
-                    <i class="las la-atom"></i>
-                </div>
-                <h2>功能亮点</h2>
-            </div>
-        </div>
-
-        <div class="col-lg-6 col-md-12 col-sm-12 carousel-section wow fadeInRight" data-wow-delay="300ms">
-            <div class="text-center testimonial-carousel owl-carousel owl-themes">
-                <div class="item">
-                    <div class="testimonials">
-                        <div class="quote" style="font-size: 1.5rem">
-                            <i class="fas fa-quote-left"></i>
-                            <span>多房间管理</span>
-                            <i class="fas fa-quote-right"></i>
-                        </div>
-                        <div class="mt-4" style="font-size: 4rem">
-                            <i class="las la-certificate"></i>
-                        </div>
-
-                        <p class="text subheading">
-                            可同时配置多个房间，同时运行，同时管理，互不干涉，单个房间也可配置多个世界，形成多层世界</p>
-
-                        <a href="https://docs.miraclesses.top/docs/rooms.html" target="_blank"
-                           class="btn btn-medium btn-rounded btn-primary mb-2">了解更多</a>
-                    </div>
-                </div>
-
-                <div class="item">
-                    <div class="testimonials">
-                        <div class="quote" style="font-size: 1.5rem">
-                            <i class="fas fa-quote-left"></i>
-                            <span>多用户管理</span>
-                            <i class="fas fa-quote-right"></i>
-                        </div>
-                        <div class="mt-4" style="font-size: 4rem">
-                            <i class="las la-user"></i>
-                        </div>
-
-                        <p class="text subheading">
-                            平台可以创建多个用户，每个用户可管理对应的一个或多个房间，通过不同权限划分，实现多用户管理</p>
-
-                        <a href="https://docs.miraclesses.top/docs/users.html" target="_blank"
-                           class="btn btn-medium btn-rounded btn-primary mb-2">了解更多</a>
-                    </div>
-                </div>
-
-                <div class="item">
-                    <div class="testimonials">
-                        <div class="quote" style="font-size: 1.5rem">
-                            <i class="fas fa-quote-left"></i>
-                            <span>多种工具</span>
-                            <i class="fas fa-quote-right"></i>
-                        </div>
-                        <div class="mt-4" style="font-size: 4rem">
-                            <i class="las la-tools"></i>
-                        </div>
-
-                        <p class="text subheading">包含定时任务、备份管理、地图预览等，让你更好的管理饥荒专用服务器</p>
-
-                        <a href="https://docs.miraclesses.top/docs/tools/" target="_blank"
-                           class="btn btn-medium btn-rounded btn-primary mb-2">了解更多</a>
-                    </div>
-                </div>
-
-                <div class="item">
-                    <div class="testimonials">
-                        <div class="quote" style="font-size: 1.5rem">
-                            <i class="fas fa-quote-left"></i>
-                            <span>桌面App</span>
-                            <i class="fas fa-quote-right"></i>
-                        </div>
-                        <div class="mt-4" style="font-size: 4rem">
-                            <i class="las la-desktop"></i>
-                        </div>
-
-                        <p class="text subheading">将多个部署好的饥荒管理平台进行统一管理，不用在各个网页中切换</p>
-
-                        <a href="https://docs.miraclesses.top/faq/dmp/app.html" target="_blank"
-                           class="btn btn-medium btn-rounded btn-primary mb-2">了解更多</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- End Testimonials -->
-
-<!-- Start Blog -->
-<section class="blog-sec" id="blog">
+<!-- Docs CTA -->
+<section class="docs-cta" id="docs">
     <div class="container">
-        <!--Heading-->
-        <div class="row text-center padding-bottom-half">
-            <div class="col-12 col-md-10 col-lg-8 offset-md-1 offset-lg-2 wow zoomIn heading-area"
-                 data-wow-duration="1s" data-wow-delay=".1s">
-                <h3 class="heading text-center">感谢为这个项目做出贡献的开发者</h3>
-                <p class="text text-center">也欢迎所有开发者贡献代码，以改善和扩展这个项目</p>
-            </div>
-        </div>
-        <!--Row-->
-        <div class="row wow fadeInUp">
-            <!--News Item-->
-            <div class="col-lg-6 mt-4">
-                <div class="news-item" style="border: 1px solid #f7f8f9;">
-                    <div style="min-height: 300px">
-                        <img alt="image" class="mx-4 my-4"
-                             src="https://contrib.rocks/image?repo=miracleEverywhere/dst-management-platform-api&columns=8"
-                             style="width: 90%; height: auto;"
-                        >
-                    </div>
-                    <div class="news-text-box">
-                        <span class="date">MIT license</span>
-                        <h4 class="news-title">饥荒管理平台主项目</h4>
-                        <a class="para" target="_blank"
-                           href="https://github.com/miracleEverywhere/dst-management-platform-api">https://github.com/miracleEverywhere/dst-management-platform-api</a>
-                    </div>
-                </div>
-            </div>
-            <!--News Item-->
-            <div class="col-lg-6 mt-4">
-                <div class="news-item">
-                    <div style="min-height: 300px">
-                        <img alt="image" class="mx-4 my-4"
-                             src="https://contrib.rocks/image?repo=miracleEverywhere/dst-management-platform-web&columns=8"
-                             style="width: 90%; height: auto;"
-                        >
-                    </div>
-                    <div class="news-text-box">
-                        <span class="date">MIT license</span>
-                        <h4 class="news-title">饥荒管理平台前端项目</h4>
-                        <a class="para" target="_blank"
-                           href="https://github.com/miracleEverywhere/dst-management-platform-web">https://github.com/miracleEverywhere/dst-management-platform-web</a>
-                    </div>
-                </div>
-            </div>
-            <!--News Item-->
-            <div class="col-lg-6 mt-4">
-                <div class="news-item">
-                    <div style="min-height: 300px">
-                        <img alt="image" class="mx-4 my-4"
-                             src="https://contrib.rocks/image?repo=miracleEverywhere/dst-management-platform-desktop&columns=8"
-                             style="width: 90%; height: auto;"
-                        >
-                    </div>
-                    <div class="news-text-box">
-                        <span class="date">MIT license</span>
-                        <h4 class="news-title">饥荒管理平台桌面App</h4>
-                        <a class="para" target="_blank"
-                           href="https://github.com/miracleEverywhere/dst-management-platform-desktop">https://github.com/miracleEverywhere/dst-management-platform-desktop</a>
-                    </div>
-                </div>
-            </div>
-            <!--News Item-->
-            <div class="col-lg-6 mt-4">
-                <div class="news-item">
-                    <div style="min-height: 300px">
-                        <img alt="image" class="mx-4 my-4"
-                             src="https://contrib.rocks/image?repo=miracleEverywhere/dst-management-platform-docs&columns=8"
-                             style="width: 90%; height: auto;"
-                        >
-                    </div>
-                    <div class="news-text-box">
-                        <span class="date">MIT license</span>
-                        <h4 class="news-title">饥荒管理平台文档项目</h4>
-                        <a class="para" target="_blank"
-                           href="https://github.com/miracleEverywhere/dst-management-platform-docs">https://github.com/miracleEverywhere/dst-management-platform-docs</a>
-                    </div>
-                </div>
-            </div>
+        <div class="docs-card reveal">
+            <div class="section-label">深度文档</div>
+            <h2 class="section-title">准备好搭建<br>你的服务器了吗？</h2>
+            <p class="section-desc">从环境准备到配置调优，完整的文档体系助你快速上手。</p>
+            <a href="https://docs.miraclesses.top/docs/" class="btn btn-primary" target="_blank" rel="noopener">
+                查看文档 <span class="arrow">→</span>
+            </a>
         </div>
     </div>
 </section>
-<!-- End Blog -->
 
-<!-- Start Contact -->
-<section class="contact-sec" id="contact" style="padding: 2rem 0;">
-    <div class="container wow fadeInUp">
-        <div class="text-center">
-            <div class="fcc">
-                <div class="mx-4" style="max-width: 25%">
-                    <a href="https://hbyidc.com/recommend/OKkxTzgMP6k7" target="_blank">
-                        <img src="img/hbyun.png" alt="hbyun">
-                    </a>
-                </div>
-                <div class="mx-4" style="max-width: 25%">
-                    <a href="https://hbyidc.com/recommend/OKkxTzgMP6k7" target="_blank">
-                        <img src="img/hbyun.png" alt="hbyun">
-                    </a>
-                </div>
-                <div class="mx-4" style="max-width: 25%">
-                    <a href="https://hbyidc.com/recommend/OKkxTzgMP6k7" target="_blank">
-                        <img src="img/hbyun.png" alt="hbyun">
-                    </a>
-                </div>
-                <div class="mx-4" style="max-width: 25%">
-                    <a href="https://hbyidc.com/recommend/OKkxTzgMP6k7" target="_blank">
-                        <img src="img/hbyun.png" alt="hbyun">
-                    </a>
-                </div>
-
-            </div>
+<!-- Footer -->
+<footer>
+    <div class="footer-inner">
+        <span class="footer-copy">&copy; 2024&ndash;<span id="currentYear"></span> 饥荒管理平台 · MIT License</span>
+        <div class="footer-partner">
+            <span>合作伙伴</span>
+            <a href="https://hbyidc.com/recommend/OKkxTzgMP6k7" target="_blank" rel="noopener">
+                <img src="img/hbyidc.png" alt="汉堡云">
+            </a>
         </div>
-    </div>
-</section>
-<!-- End Contact -->
-
-<!-- Start Footer-->
-<footer class="footer">
-    <div class="container">
-        <div class="row align-items-center">
-            <!--Text-->
-            <div class="col-12 text-center mt-3">
-                <p class="company-about fadeIn">2025 DMP | Made With Love By <a
-                        href="https://github.com/miracleEverywhere" target="_blank">Miracle</a> | MIT</p>
-            </div>
-        </div>
+        <ul class="footer-links">
+            <li><a href="https://github.com/miracleEverywhere/dst-management-platform-web" target="_blank" rel="noopener">前端</a></li>
+            <li><a href="https://github.com/miracleEverywhere/dst-management-platform-api" target="_blank" rel="noopener">后端</a></li>
+            <li><a href="https://github.com/miracleEverywhere/dst-management-platform-desktop" target="_blank" rel="noopener">桌面应用</a></li>
+            <li><a href="https://docs.miraclesses.top/" target="_blank" rel="noopener">使用指南</a></li>
+        </ul>
     </div>
 </footer>
-<!-- End Footer-->
 
-<!-- JavaScript -->
-<script src="js/bundle.min.js"></script>
-<!-- Plugin Js -->
-<script src="js/jquery.appear.js"></script>
-<script src="js/owl.carousel.min.js"></script>
-<script src="js/wow.min.js"></script>
-<script src="js/jquery.fancybox.min.js"></script>
-<script src="js/particles.min.js"></script>
+<script>
+(function() {
+    'use strict';
 
-<!-- CUSTOM JS -->
-<script src="js/contact_us.js"></script>
-<script src="js/circle-progress.min.js"></script>
-<script src="js/script.js"></script>
+    // ─── Theme Toggle ───
+    const html = document.documentElement;
+    const themeToggle = document.getElementById('themeToggle');
+    let particleRgb = getComputedStyle(html).getPropertyValue('--particle-rgb').trim();
+
+    function setTheme(theme) {
+        if (theme === 'light') {
+            html.setAttribute('data-theme', 'light');
+        } else {
+            html.removeAttribute('data-theme');
+        }
+        particleRgb = getComputedStyle(html).getPropertyValue('--particle-rgb').trim();
+        localStorage.setItem('theme', theme);
+    }
+
+    function toggleTheme() {
+        var current = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+        setTheme(current);
+    }
+
+    // Load saved theme, fallback to system preference
+    var saved = localStorage.getItem('theme');
+    if (saved === 'light') setTheme('light');
+    else if (!saved && window.matchMedia('(prefers-color-scheme: light)').matches) setTheme('light');
+
+    themeToggle.addEventListener('click', toggleTheme);
+
+    // ─── Footer Year ───
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    // ─── Floating Ember Particles ───
+    const canvas = document.getElementById('particles-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let animationId;
+    let mouseX = -100, mouseY = -100;
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    class Particle {
+        constructor() {
+            this.reset(true);
+        }
+        reset(init) {
+            this.x = Math.random() * canvas.width;
+            this.y = init ? Math.random() * canvas.height : canvas.height + 20;
+            this.size = Math.random() * 2 + 0.8;
+            this.speedY = -(Math.random() * 0.5 + 0.2);
+            this.speedX = (Math.random() - 0.5) * 0.4;
+            this.opacity = Math.random() * 0.5 + 0.15;
+            this.opacitySpeed = Math.random() * 0.004 + 0.002;
+            this.life = 0;
+            this.maxLife = Math.random() * 400 + 300;
+            this.wobble = Math.random() * Math.PI * 2;
+            this.wobbleSpeed = Math.random() * 0.02 + 0.005;
+        }
+        update() {
+            this.wobble += this.wobbleSpeed;
+            this.y += this.speedY + Math.sin(this.wobble) * 0.3;
+            this.x += this.speedX;
+            this.life++;
+            this.opacity -= this.opacitySpeed;
+            // Mouse repulsion
+            const dx = this.x - mouseX;
+            const dy = this.y - mouseY;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 120) {
+                const force = (120 - dist) / 120 * 0.8;
+                this.x += (dx / dist) * force;
+                this.y += (dy / dist) * force;
+            }
+            if (this.life > this.maxLife || this.opacity <= 0 || this.y < -20) {
+                this.reset(false);
+            }
+        }
+        draw(ctx) {
+            ctx.beginPath();
+            const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size * 2);
+            gradient.addColorStop(0, `rgba(${particleRgb},${this.opacity})`);
+            gradient.addColorStop(1, `rgba(${particleRgb},0)`);
+            ctx.fillStyle = gradient;
+            ctx.arc(this.x, this.y, this.size * 2, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    const PARTICLE_COUNT = 55;
+    for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(new Particle());
+
+    document.addEventListener('mousemove', function(e) {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+    });
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(function(p) { p.update(); p.draw(ctx); });
+        animationId = requestAnimationFrame(animate);
+    }
+    animate();
+
+    // ─── Navbar Scroll Effect ───
+    const navbar = document.getElementById('navbar');
+    let scrollTicking = false;
+    window.addEventListener('scroll', function() {
+        if (!scrollTicking) {
+            requestAnimationFrame(function() {
+                navbar.classList.toggle('scrolled', window.scrollY > 40);
+                scrollTicking = false;
+            });
+            scrollTicking = true;
+        }
+    }, { passive: true });
+
+    // ─── Scroll Reveal ───
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    revealEls.forEach(function(el) { observer.observe(el); });
+
+    // ─── Feature Card Mouse Glow ───
+    document.querySelectorAll('.feature-card').forEach(function(card) {
+        card.addEventListener('mousemove', function(e) {
+            const rect = card.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            card.style.setProperty('--mouse-x', x + '%');
+            card.style.setProperty('--mouse-y', y + '%');
+        });
+    });
+})();
+</script>
 
 </body>
 </html>
