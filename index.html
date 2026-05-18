@@ -358,6 +358,70 @@
         .theme-toggle .icon-sun { opacity: 0; transform: rotate(-90deg) scale(.5); }
         .theme-toggle .icon-moon { opacity: 1; transform: rotate(0) scale(1); }
 
+        /* ─── Support Banner ─── */
+        .support-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 200;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: #fff;
+            text-align: center;
+            padding: 10px 48px 10px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: -.1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            box-shadow: 0 2px 16px rgba(231, 76, 60, .3);
+            transition: transform .4s cubic-bezier(.25,.1,.25,1);
+        }
+        .support-banner.dismissed {
+            transform: translateY(-100%);
+        }
+        .support-banner a {
+            color: #fff;
+            font-weight: 600;
+            text-decoration: none;
+            background: rgba(255,255,255,.18);
+            padding: 4px 16px;
+            border-radius: 100px;
+            transition: background .25s;
+            white-space: nowrap;
+        }
+        .support-banner a:hover {
+            background: rgba(255,255,255,.28);
+        }
+        .support-banner .banner-close {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,.15);
+            border: none;
+            color: #fff;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .2s;
+            flex-shrink: 0;
+        }
+        .support-banner .banner-close:hover {
+            background: rgba(255,255,255,.3);
+        }
+
+        /* Shift fixed elements when banner is visible — positions set dynamically via JS */
+
         /* ─── Responsive ─── */
         @media (max-width: 768px) {
             .nav { width: calc(100% - 32px); padding: 0 6px 0 20px; border-radius: 80px; }
@@ -381,10 +445,18 @@
             .hero-actions { flex-direction: column; width: 100%; }
             .hero-actions .btn { justify-content: center; width: 100%; }
             .section-title { font-size: 28px; }
+            .support-banner { font-size: 13px; padding: 10px 44px 10px 12px; }
         }
     </style>
 </head>
 <body>
+
+<!-- Support Banner -->
+<div class="support-banner" id="supportBanner">
+    <span>我们的一位贡献者家人正在ICU，急需您的帮助</span>
+    <a href="https://www.shuidichou.com/cf/contribute/63960d2c-d243-4139-9b9a-d8721582d7f2" target="_blank" rel="noopener">伸出援手 →</a>
+    <button class="banner-close" id="bannerClose" aria-label="关闭">&times;</button>
+</div>
 
 <button class="theme-toggle" id="themeToggle" aria-label="切换明暗主题">
     <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -406,6 +478,7 @@
     <ul class="nav-links">
         <li><a href="#features">功能</a></li>
         <li><a href="#projects">开源</a></li>
+        <li><a href="#service">搭建</a></li>
         <li><a href="#preview">预览</a></li>
         <li><a href="#docs">文档</a></li>
         <li><a href="https://docs.miraclesses.top/quick-start/" class="nav-cta" target="_blank" rel="noopener">快速上手</a></li>
@@ -517,6 +590,22 @@
     </div>
 </section>
 
+<!-- Service -->
+<section class="docs-cta" id="service">
+    <div class="container">
+        <div class="docs-card reveal">
+            <div class="section-label">搭建服务</div>
+            <h2 class="section-title">不想自己动手？<br>让我来帮你。</h2>
+            <p class="section-desc" style="margin-bottom: 24px;">帮你安装部署饥荒管理平台，你只需要像游戏中一样，配置房间，管理房间，进行游戏。</p>
+            <div style="display: flex; align-items: center; justify-content: center; flex-wrap: wrap; margin-bottom: 48px;">
+                <a href="https://demo.miraclesses.top/assist/" class="btn btn-primary" target="_blank" rel="noopener">
+                    查看详情 <span class="arrow">→</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- Preview -->
 <section class="docs-cta" id="preview">
     <div class="container">
@@ -606,6 +695,31 @@
     else if (!saved && window.matchMedia('(prefers-color-scheme: light)').matches) setTheme('light');
 
     themeToggle.addEventListener('click', toggleTheme);
+
+    // ─── Support Banner Dismiss ───
+    (function() {
+        var banner = document.getElementById('supportBanner');
+        var closeBtn = document.getElementById('bannerClose');
+        var nav = document.getElementById('navbar');
+        var themeToggleBtn = document.getElementById('themeToggle');
+
+        function adjustNavPosition() {
+            var bannerH = banner.classList.contains('dismissed') ? 0 : banner.offsetHeight;
+            nav.style.top = (bannerH + 16) + 'px';
+            themeToggleBtn.style.top = (bannerH + 24) + 'px';
+        }
+
+        document.body.classList.add('banner-visible');
+        adjustNavPosition();
+        window.addEventListener('resize', adjustNavPosition);
+
+        closeBtn.addEventListener('click', function() {
+            banner.classList.add('dismissed');
+            document.body.classList.remove('banner-visible');
+            nav.style.top = '';
+            themeToggleBtn.style.top = '';
+        });
+    })();
 
     // ─── Footer Year ───
     document.getElementById('currentYear').textContent = new Date().getFullYear();
