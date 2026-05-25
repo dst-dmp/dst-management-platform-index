@@ -692,10 +692,13 @@
         setTheme(current);
     }
 
-    // Load saved theme, fallback to system preference
+    // Load saved theme, default to dark
     var saved = localStorage.getItem('theme');
-    if (saved === 'light') setTheme('light');
-    else if (!saved && window.matchMedia('(prefers-color-scheme: light)').matches) setTheme('light');
+    if (saved === 'light') {
+      setTheme('light');
+    } else {
+      setTheme('dark');
+    }
 
     themeToggle.addEventListener('click', toggleTheme);
 
