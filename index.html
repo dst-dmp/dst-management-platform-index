@@ -4,9 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Miracle">
-    <meta name="description" content="饥荒管理平台(DMP) — 满足一键开服、玩家管理、房间管理、数据统计、定时任务等功能">
-    <meta name="keywords" content="饥荒, 饥荒联机版, Steam, 饥荒管理平台, DMP, 饥荒开服, Don't Starve Together">
-    <title>饥荒管理平台 — DMP</title>
+    <meta name="description" content="Miracle 的导航页">
+    <meta name="keywords" content="饥荒, 饥荒管理平台, DMP, 导航, Miracle, Miraclesses, 黑名单, DST, Block, 博客">
+    <title>导航页</title>
     <link href="img/favicon.ico" rel="icon">
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -26,10 +26,6 @@
             --glass-base: rgba(255,255,255,.03);
             --glass-tint: rgba(140,87,255,.07);
             --glass-edge: rgba(255,255,255,.1);
-            --glass-highlight-scrolled: rgba(255,255,255,.07);
-            --glass-base-scrolled: rgba(255,255,255,.04);
-            --glass-edge-scrolled: rgba(255,255,255,.04);
-            --nav-link-hover: rgba(255,255,255,.06);
             --btn-secondary-bg: rgba(255,255,255,.05);
             --btn-secondary-hover: rgba(255,255,255,.08);
             --card-shadow: rgba(0,0,0,.3);
@@ -37,7 +33,6 @@
             --radius-sm: 12px;
             --radius: 20px;
             --radius-lg: 28px;
-            --nav-height: 56px;
         }
         [data-theme="light"] {
             --bg: #f5f5f7;
@@ -54,10 +49,6 @@
             --glass-base: rgba(255,255,255,.25);
             --glass-tint: rgba(140,87,255,.05);
             --glass-edge: rgba(255,255,255,.35);
-            --glass-highlight-scrolled: rgba(255,255,255,.75);
-            --glass-base-scrolled: rgba(255,255,255,.45);
-            --glass-edge-scrolled: rgba(255,255,255,.55);
-            --nav-link-hover: rgba(0,0,0,.04);
             --btn-secondary-bg: rgba(0,0,0,.04);
             --btn-secondary-hover: rgba(0,0,0,.07);
             --card-shadow: rgba(0,0,0,.08);
@@ -73,7 +64,13 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             transition: background .5s ease, color .5s ease;
+            padding: 24px;
         }
         ::selection { background: var(--accent); color: #fff; }
 
@@ -82,256 +79,6 @@
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none; z-index: 0;
         }
-
-        /* ─── Navigation ─── */
-        .nav {
-            position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
-            z-index: 100; width: calc(100% - 48px); max-width: 720px;
-            height: var(--nav-height);
-            background: linear-gradient(
-                165deg,
-                var(--glass-highlight) 0%,
-                var(--glass-base) 30%,
-                var(--glass-tint) 60%,
-                var(--glass-base) 100%
-            );
-            backdrop-filter: blur(60px) saturate(160%);
-            -webkit-backdrop-filter: blur(60px) saturate(160%);
-            border: 1px solid var(--border);
-            border-radius: 100px;
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 0 8px 0 24px;
-            box-shadow:
-                inset 0 1px 0 var(--glass-edge),
-                0 4px 24px rgba(0,0,0,.12);
-            transition: all .4s cubic-bezier(.25,.1,.25,1);
-        }
-        .nav.scrolled {
-            --glass-highlight: var(--glass-highlight-scrolled);
-            --glass-base: var(--glass-base-scrolled);
-            --glass-edge: var(--glass-edge-scrolled);
-            border-color: var(--border-hover);
-            box-shadow:
-                inset 0 1px 0 var(--glass-edge-scrolled),
-                0 8px 32px rgba(0,0,0,.2);
-        }
-        .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-        .nav-brand img { height: 28px; width: auto; }
-        .nav-brand span { color: var(--text); font-weight: 600; font-size: 15px; letter-spacing: -.2px; }
-        .nav-links { display: flex; align-items: center; gap: 4px; list-style: none; }
-        .nav-links a {
-            color: var(--text-secondary); text-decoration: none;
-            font-size: 13px; font-weight: 500; padding: 8px 16px;
-            border-radius: 100px; transition: all .25s ease; letter-spacing: -.1px;
-        }
-        .nav-links a:hover { color: var(--text); background: var(--nav-link-hover); }
-        .nav-cta {
-            background: var(--accent); color: #fff !important;
-            font-weight: 600 !important; padding: 8px 20px !important;
-            margin-left: 4px;
-            margin-right: 8px;
-        }
-        .nav-cta:hover { background: #9D6FFF !important; transform: scale(1.03); }
-
-        /* ─── Section Base ─── */
-        section { position: relative; z-index: 1; padding: 120px 24px; }
-        .container { max-width: 1080px; margin: 0 auto; }
-        .section-label {
-            display: inline-block; font-size: 12px; font-weight: 600;
-            letter-spacing: .12em; text-transform: uppercase;
-            color: var(--accent); margin-bottom: 20px;
-        }
-        .section-title {
-            font-size: clamp(32px, 5vw, 56px); font-weight: 700;
-            letter-spacing: -.03em; line-height: 1.12; margin-bottom: 20px;
-        }
-        .section-desc {
-            font-size: 18px; color: var(--text-secondary); max-width: 560px;
-            line-height: 1.7; letter-spacing: -.1px;
-        }
-
-        /* ─── Hero ─── */
-        .hero {
-            min-height: 100vh; display: flex; align-items: center;
-            padding-top: calc(var(--nav-height) + 40px);
-        }
-        .hero .container {
-            display: flex; flex-direction: column; align-items: flex-start;
-            max-width: 880px;
-        }
-        .hero-badge {
-            display: inline-flex; align-items: center; gap: 8px;
-            background: var(--accent-soft); border: 1px solid rgba(140,87,255,.15);
-            border-radius: 100px; padding: 6px 18px 6px 8px;
-            font-size: 13px; color: var(--accent); font-weight: 500;
-            margin-bottom: 32px; animation: fadeInUp .8s ease both;
-        }
-        .hero-badge .dot {
-            width: 7px; height: 7px; border-radius: 50%; background: var(--accent);
-            box-shadow: 0 0 8px var(--accent-glow); animation: pulse-dot 2s ease infinite;
-        }
-        @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(1.5)} }
-        .hero h1 {
-            font-size: clamp(40px, 7vw, 80px); font-weight: 700;
-            letter-spacing: -.04em; line-height: 1.05; margin-bottom: 24px;
-            animation: fadeInUp .8s .1s ease both;
-        }
-        .hero h1 .accent { color: var(--accent); }
-        .hero p {
-            font-size: clamp(17px, 2.5vw, 21px); color: var(--text-secondary);
-            max-width: 520px; line-height: 1.6; letter-spacing: -.1px;
-            margin-bottom: 40px; animation: fadeInUp .8s .2s ease both;
-        }
-        .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; animation: fadeInUp .8s .3s ease both; }
-        .btn {
-            display: inline-flex; align-items: center; gap: 8px;
-            padding: 14px 28px; border-radius: 100px; font-size: 15px; font-weight: 600;
-            text-decoration: none; letter-spacing: -.2px; transition: all .3s cubic-bezier(.25,.1,.25,1);
-            border: none; cursor: pointer; white-space: nowrap;
-        }
-        .btn-primary { background: var(--accent); color: #fff; }
-        .btn-primary:hover { background: #9D6FFF; transform: translateY(-2px); box-shadow: 0 12px 32px var(--accent-glow); }
-        .btn-secondary {
-            background: var(--btn-secondary-bg); color: var(--text);
-            border: 1px solid var(--border);
-        }
-        .btn-secondary:hover { background: var(--btn-secondary-hover); border-color: var(--border-hover); transform: translateY(-2px); }
-        .btn .arrow { transition: transform .3s ease; }
-        .btn:hover .arrow { transform: translateX(3px); }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* ─── Feature Cards ─── */
-        .features { padding-top: 80px; }
-        .features .section-header { text-align: center; margin-bottom: 72px; }
-        .features .section-header .section-desc { margin: 0 auto; }
-        .features-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-        .feature-card {
-            background: var(--bg-card); border: 1px solid var(--border);
-            border-radius: var(--radius); padding: 36px 32px;
-            transition: all .4s cubic-bezier(.25,.1,.25,1);
-            position: relative; overflow: hidden;
-        }
-        .feature-card::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), var(--accent-soft), transparent 70%);
-            opacity: 0; transition: opacity .4s ease;
-        }
-        .feature-card:hover::before { opacity: 1; }
-        .feature-card:hover {
-            border-color: var(--border-hover);
-            transform: translateY(-4px);
-            box-shadow: 0 20px 60px var(--card-shadow);
-        }
-        .feature-card > * { position: relative; z-index: 1; }
-        .feature-icon {
-            width: 48px; height: 48px; border-radius: var(--radius-sm);
-            background: var(--accent-soft); display: flex; align-items: center; justify-content: center;
-            margin-bottom: 20px; font-size: 22px; color: var(--accent);
-        }
-        .feature-card h3 {
-            font-size: 19px; font-weight: 600; letter-spacing: -.3px;
-            margin-bottom: 10px;
-        }
-        .feature-card p {
-            font-size: 14px; color: var(--text-secondary); line-height: 1.65;
-            letter-spacing: -.1px;
-        }
-
-        /* ─── Projects ─── */
-        .projects .section-header { text-align: center; margin-bottom: 72px; }
-        .projects .section-header .section-desc { margin: 0 auto; }
-        .projects-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-        }
-        .project-card {
-            background: var(--bg-card); border: 1px solid var(--border);
-            border-radius: var(--radius); padding: 32px;
-            text-decoration: none; color: inherit;
-            transition: all .4s cubic-bezier(.25,.1,.25,1);
-            display: flex; flex-direction: column; gap: 12px;
-            position: relative; overflow: hidden;
-        }
-        .project-card::after {
-            content: ''; position: absolute; top: -1px; left: 20px; right: 20px; height: 1px;
-            background: linear-gradient(90deg, transparent, var(--accent), transparent);
-            opacity: 0; transition: opacity .4s ease;
-        }
-        .project-card:hover::after { opacity: 1; }
-        .project-card:hover {
-            border-color: var(--border-hover);
-            transform: translateY(-4px);
-            box-shadow: 0 20px 60px var(--card-shadow);
-        }
-        .project-card .lang {
-            font-size: 12px; font-weight: 600; letter-spacing: .08em;
-            text-transform: uppercase; color: var(--accent);
-        }
-        .project-card h3 { font-size: 22px; font-weight: 600; letter-spacing: -.3px; }
-        .project-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; flex: 1; }
-        .project-card .link-row {
-            display: flex; align-items: center; gap: 6px;
-            font-size: 14px; font-weight: 500; color: var(--text-tertiary);
-            transition: color .3s ease;
-        }
-        .project-card:hover .link-row { color: var(--accent); }
-
-        /* ─── Docs CTA ─── */
-        .docs-cta { text-align: center; }
-        .docs-card {
-            background: var(--bg-card); border: 1px solid var(--border);
-            border-radius: var(--radius-lg); padding: 72px 48px;
-            position: relative; overflow: hidden;
-            transition: all .4s ease;
-        }
-        .docs-card::before {
-            content: ''; position: absolute; inset: 0;
-            background: radial-gradient(800px circle at 50% 0%, var(--accent-glow), transparent 70%);
-            opacity: .6;
-        }
-        .docs-card > * { position: relative; z-index: 1; }
-        .docs-card .section-title { margin-bottom: 16px; }
-        .docs-card .section-desc { margin: 0 auto 32px; }
-        .docs-card .btn { font-size: 16px; padding: 16px 36px; }
-
-        /* ─── Footer ─── */
-        footer {
-            position: relative; z-index: 1; padding: 56px 24px 40px;
-            border-top: 1px solid var(--border);
-        }
-        footer .footer-inner {
-            max-width: 1080px; margin: 0 auto;
-            display: flex; align-items: center; justify-content: space-between;
-            flex-wrap: wrap; gap: 28px;
-        }
-        footer .footer-copy { font-size: 13px; color: var(--text-tertiary); letter-spacing: -.1px; }
-        footer .footer-partner {
-            display: flex; align-items: center; gap: 12px;
-        }
-        footer .footer-partner span {
-            font-size: 11px; color: var(--text-tertiary); letter-spacing: .1em;
-            text-transform: uppercase;
-        }
-        footer .footer-partner img {
-            height: 36px; width: auto; opacity: .65; transition: opacity .3s ease;
-        }
-        footer .footer-partner img:hover { opacity: 1; }
-        footer .footer-links { display: flex; gap: 24px; list-style: none; flex-wrap: wrap; }
-        footer .footer-links a {
-            color: var(--text-tertiary); text-decoration: none; font-size: 13px;
-            transition: color .25s ease; letter-spacing: -.1px;
-        }
-        footer .footer-links a:hover { color: var(--text); }
-
-        /* ─── Scroll Reveal ─── */
-        .reveal { opacity: 0; transform: translateY(40px); transition: all .8s cubic-bezier(.25,.1,.25,1); }
-        .reveal.visible { opacity: 1; transform: translateY(0); }
 
         /* ─── Theme Toggle ─── */
         .theme-toggle {
@@ -358,105 +105,107 @@
         .theme-toggle .icon-sun { opacity: 0; transform: rotate(-90deg) scale(.5); }
         .theme-toggle .icon-moon { opacity: 1; transform: rotate(0) scale(1); }
 
-        /* ─── Support Banner ─── */
-        .support-banner {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 200;
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
-            color: #fff;
-            text-align: center;
-            padding: 10px 48px 10px 16px;
-            font-size: 14px;
-            font-weight: 500;
-            letter-spacing: -.1px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            flex-wrap: wrap;
-            box-shadow: 0 2px 16px rgba(231, 76, 60, .3);
-            transition: transform .4s cubic-bezier(.25,.1,.25,1);
-        }
-        .support-banner.dismissed {
-            transform: translateY(-100%);
-        }
-        .support-banner a {
-            color: #fff;
-            font-weight: 600;
-            text-decoration: none;
-            background: rgba(255,255,255,.18);
-            padding: 4px 16px;
-            border-radius: 100px;
-            transition: background .25s;
-            white-space: nowrap;
-        }
-        .support-banner a:hover {
-            background: rgba(255,255,255,.28);
-        }
-        .support-banner .banner-close {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255,255,255,.15);
-            border: none;
-            color: #fff;
-            width: 26px;
-            height: 26px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 16px;
-            line-height: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background .2s;
-            flex-shrink: 0;
-        }
-        .support-banner .banner-close:hover {
-            background: rgba(255,255,255,.3);
+        /* ─── Main Content ─── */
+        .main {
+            position: relative; z-index: 1;
+            display: flex; flex-direction: column; align-items: center;
+            width: 100%; max-width: 720px;
         }
 
-        /* Shift fixed elements when banner is visible — positions set dynamically via JS */
+        /* ─── Header ─── */
+        .header {
+            display: flex; flex-direction: column; align-items: center;
+            margin-bottom: 24px;
+        }
+        .header-brand {
+            display: flex; align-items: center; gap: 12px;
+            text-decoration: none; margin-bottom: 12px;
+        }
+        .header-brand img { height: 40px; width: auto; }
+        .header-brand span {
+            color: var(--text); font-weight: 700; font-size: 22px;
+            letter-spacing: -.4px;
+        }
+        .header-tagline {
+            font-size: 14px; color: var(--text-tertiary);
+            letter-spacing: -.1px;
+        }
+
+        /* ─── Nav Cards Grid ─── */
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            width: 100%;
+        }
+        .nav-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 32px 28px;
+            text-decoration: none; color: inherit;
+            transition: all .4s cubic-bezier(.25,.1,.25,1);
+            display: flex; flex-direction: column; gap: 10px;
+            position: relative; overflow: hidden;
+        }
+        .nav-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(500px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), var(--accent-soft), transparent 70%);
+            opacity: 0; transition: opacity .4s ease;
+            z-index: 0;
+        }
+        .nav-card:hover::before { opacity: 1; }
+        .nav-card::after {
+            content: ''; position: absolute; top: -1px; left: 20px; right: 20px; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity: 0; transition: opacity .4s ease;
+            z-index: 1;
+        }
+        .nav-card:hover::after { opacity: 1; }
+        .nav-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 60px var(--card-shadow);
+        }
+        .nav-card > * { position: relative; z-index: 2; }
+        .nav-card .card-icon {
+            width: 44px; height: 44px; border-radius: var(--radius-sm);
+            background: var(--accent-soft); display: flex; align-items: center; justify-content: center;
+            font-size: 20px; color: var(--accent); flex-shrink: 0;
+        }
+        .nav-card h3 {
+            font-size: 18px; font-weight: 600; letter-spacing: -.3px;
+        }
+        .nav-card .card-desc {
+            font-size: 13px; color: var(--text-secondary); line-height: 1.55;
+            letter-spacing: -.1px;
+        }
+        .nav-card .card-domain {
+            font-size: 12px; color: var(--text-tertiary); letter-spacing: -.1px;
+            margin-top: auto; padding-top: 4px;
+            transition: color .3s ease;
+        }
+        .nav-card:hover .card-domain { color: var(--accent); }
+
+        /* ─── Footer ─── */
+        .footer {
+            position: relative; z-index: 1;
+            margin-top: 48px;
+            font-size: 13px; color: var(--text-tertiary);
+            letter-spacing: -.1px; text-align: center;
+        }
 
         /* ─── Responsive ─── */
-        @media (max-width: 768px) {
-            .nav { width: calc(100% - 32px); padding: 0 6px 0 20px; border-radius: 80px; }
-            .nav-links a { padding: 8px 12px; font-size: 13px; }
-            .nav-brand span { font-size: 14px; }
-            .nav-cta { padding: 8px 16px !important; font-size: 13px !important; }
-            .theme-toggle { top: 24px; }
-            section { padding: 80px 20px; }
-            .hero h1 { font-size: 36px; }
-            .features-grid { grid-template-columns: 1fr; }
-            .projects-grid { grid-template-columns: 1fr; }
-            .docs-card { padding: 48px 24px; }
-            footer .footer-inner { flex-direction: column; text-align: center; }
-        }
-
-        @media (max-width: 480px) {
-            .nav { left: 16px; right: 60px; transform: none; width: auto; }
-            .nav-brand span { font-size: 15px; }
-            .theme-toggle { top: 26px; right: 14px; width: 36px; height: 36px; }
-            .nav-links a:not(.nav-cta) { display: none; }
-            .hero-actions { flex-direction: column; width: 100%; }
-            .hero-actions .btn { justify-content: center; width: 100%; }
-            .section-title { font-size: 28px; }
-            .support-banner { font-size: 13px; padding: 10px 44px 10px 12px; }
+        @media (max-width: 600px) {
+            .nav-grid { grid-template-columns: 1fr; }
+            .nav-card { padding: 28px 24px; }
+            .header-brand span { font-size: 19px; }
+            .header { margin-bottom: 36px; }
+            body { padding: 60px 20px 40px; justify-content: flex-start; padding-top: 80px; }
         }
     </style>
 </head>
 <body>
-
-<!-- Support Banner-->
-<div class="support-banner" id="supportBanner" style="display: none;">
-    <span>我们的一位贡献者家人正在ICU，急需您的帮助</span>
-    <a href="https://www.shuidichou.com/cf/contribute/63960d2c-d243-4139-9b9a-d8721582d7f2" target="_blank" rel="noopener">伸出援手 →</a>
-    <button class="banner-close" id="bannerClose" aria-label="关闭">&times;</button>
-</div>
 
 <button class="theme-toggle" id="themeToggle" aria-label="切换明暗主题">
     <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -469,204 +218,60 @@
 
 <canvas id="particles-canvas"></canvas>
 
-<!-- Navigation -->
-<nav class="nav" id="navbar">
-    <a href="#" class="nav-brand">
-        <img src="img/logo.png" alt="DMP">
-        <span>饥荒管理平台</span>
-    </a>
-    <ul class="nav-links">
-        <li><a href="#features">功能</a></li>
-        <li><a href="#projects">开源</a></li>
-<!--        <li><a href="#service">搭建</a></li>-->
-        <li><a href="#preview">预览</a></li>
-        <li><a href="#docs">文档</a></li>
-        <li><a href="https://docs.miraclesses.top/quick-start/" class="nav-cta" target="_blank" rel="noopener">快速上手</a></li>
-    </ul>
-</nav>
+<main class="main">
+    <header class="header">
+        <a href="#" class="header-brand">
+            <span>Miracle</span>
+        </a>
+        <p class="header-tagline">相关站点</p>
+    </header>
 
-<!-- Hero -->
-<section class="hero">
-    <div class="container">
-        <div class="hero-badge">
-            <span class="dot"></span> 开源免费，持续更新
-        </div>
-        <h1>饥荒<span class="accent">联机</span>，<br>从未如此简单。</h1>
-        <p>优雅的饥荒专用服务器管理方案。一键部署，智能运维，让你专注于游戏本身。</p>
-        <div class="hero-actions">
-            <a href="https://docs.miraclesses.top/quick-start/install.html" class="btn btn-primary" target="_blank" rel="noopener">
-                开始部署
-            </a>
-            <a href="https://github.com/miracleEverywhere/dst-management-platform-api" class="btn btn-secondary" target="_blank" rel="noopener">
-                GitHub
-            </a>
-        </div>
+    <div class="nav-grid">
+        <!-- DMP 官网 -->
+        <a href="https://dmp.miraclesses.top" class="nav-card" target="_blank" rel="noopener">
+            <div class="card-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </div>
+            <h3>饥荒管理平台官网</h3>
+            <p class="card-desc">一站式饥荒专用服务器管理方案，一键开服，智能运维。</p>
+            <span class="card-domain">dmp.miraclesses.top</span>
+        </a>
+
+        <!-- 文档 -->
+        <a href="https://docs.miraclesses.top" class="nav-card" target="_blank" rel="noopener">
+            <div class="card-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+            </div>
+            <h3>饥荒管理平台文档</h3>
+            <p class="card-desc">饥荒管理平台使用指南与常见问题解答。</p>
+            <span class="card-domain">docs.miraclesses.top</span>
+        </a>
+
+        <!-- 黑名单 -->
+        <a href="https://dst-block.miraclesses.top" class="nav-card" target="_blank" rel="noopener">
+            <div class="card-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <h3>DST Block</h3>
+            <p class="card-desc">DST Block 是一个社区驱动的饥荒联机版黑名单管理平台。</p>
+            <span class="card-domain">dst-block.miraclesses.top</span>
+        </a>
+
+        <!-- 博客 -->
+        <a href="https://blog.miraclesses.top" class="nav-card" target="_blank" rel="noopener">
+            <div class="card-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            </div>
+            <h3>我的博客</h3>
+            <p class="card-desc">一个破破烂烂的垃圾堆。</p>
+            <span class="card-domain">blog.miraclesses.top</span>
+        </a>
     </div>
-</section>
 
-<!-- Features -->
-<section class="features" id="features">
-    <div class="container">
-        <div class="section-header reveal">
-            <div class="section-label">核心能力</div>
-            <h2 class="section-title">你所需要的一切，<br>尽在掌握。</h2>
-            <p class="section-desc">从服务器部署到玩家管理，从数据统计到定时任务 — 每一个环节都经过精心打磨。</p>
-        </div>
-        <div class="features-grid">
-            <div class="feature-card reveal" style="transition-delay: .1s">
-                <div class="feature-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-                </div>
-                <h3>一键开服</h3>
-                <p>告别繁琐的命令行配置。通过可视化界面，只需几次点击即可创建并启动你的专属饥荒服务器。</p>
-            </div>
-            <div class="feature-card reveal" style="transition-delay: .2s">
-                <div class="feature-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-                </div>
-                <h3>用户体系</h3>
-                <p>多用户相互隔离，互不影响。细粒度权限配置，精确到每个房间和操作。</p>
-            </div>
-            <div class="feature-card reveal" style="transition-delay: .3s">
-                <div class="feature-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
-                </div>
-                <h3>房间管理</h3>
-                <p>多世界、多房间统一调度，灵活的存档备份与恢复机制，让你的游戏世界持久稳固。</p>
-            </div>
-            <div class="feature-card reveal" style="transition-delay: .4s">
-                <div class="feature-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-                </div>
-                <h3>数据统计</h3>
-                <p>直观的仪表盘展示服务器运行状态、玩家活跃度趋势，数据驱动你的决策。</p>
-            </div>
-            <div class="feature-card reveal" style="transition-delay: .5s">
-                <div class="feature-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                </div>
-                <h3>定时任务</h3>
-                <p>自动备份、定时重启等功能，将重复性操作交给系统，你只需要设定规则。</p>
-            </div>
-            <div class="feature-card reveal" style="transition-delay: .6s">
-                <div class="feature-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
-                </div>
-                <h3>实用工具</h3>
-                <p>内置地图预览、定时通知等便捷工具，让游戏和运维更加得心应手。</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Projects -->
-<section class="projects" id="projects">
-    <div class="container">
-        <div class="section-header reveal">
-            <div class="section-label">开源生态</div>
-            <h2 class="section-title">完全开源，<br>自由掌控。</h2>
-            <p class="section-desc">三个独立仓库，前后端分离架构。MIT 协议，放心使用。</p>
-        </div>
-        <div class="projects-grid">
-            <a href="https://github.com/miracleEverywhere/dst-management-platform-web" target="_blank" rel="noopener" class="project-card reveal" style="transition-delay: .1s">
-                <span class="lang">Vue 3 · Vite</span>
-                <h3>前端</h3>
-                <p>基于 Vue 3 + Vite 的现代化管理界面，响应式设计，支持暗色模式。</p>
-                <span class="link-row">查看仓库 <span class="arrow">→</span></span>
-            </a>
-            <a href="https://github.com/miracleEverywhere/dst-management-platform-api" target="_blank" rel="noopener" class="project-card reveal" style="transition-delay: .2s">
-                <span class="lang">Go · Gin</span>
-                <h3>后端</h3>
-                <p>基于 Go 语言的高性能 API 服务，WebSocket 实时通信，完善的权限认证与任务调度系统。</p>
-                <span class="link-row">查看仓库 <span class="arrow">→</span></span>
-            </a>
-            <a href="https://github.com/miracleEverywhere/dst-management-platform-desktop" target="_blank" rel="noopener" class="project-card reveal" style="transition-delay: .3s">
-                <span class="lang">Electron</span>
-                <h3>桌面应用</h3>
-                <p>独立的桌面客户端，同时管理多个平台，跳过繁琐，得心应手。</p>
-                <span class="link-row">查看仓库 <span class="arrow">→</span></span>
-            </a>
-        </div>
-    </div>
-</section>
-
-<!-- Service -->
-<!--<section class="docs-cta" id="service">-->
-<!--    <div class="container">-->
-<!--        <div class="docs-card reveal">-->
-<!--            <div class="section-label">增值服务</div>-->
-<!--            <h2 class="section-title">不想自己动手？<br>让我来帮你。</h2>-->
-<!--            <p class="section-desc" style="margin-bottom: 24px;">帮你安装部署饥荒管理平台和处理问题，你只需要像游戏中一样，配置房间，管理房间，进行游戏。</p>-->
-<!--            <div style="display: flex; align-items: center; justify-content: center; flex-wrap: wrap; margin-bottom: 48px;">-->
-<!--                <a href="http://8.137.107.46:9876/" class="btn btn-primary" target="_blank" rel="noopener">-->
-<!--                    前往下单-->
-<!--                </a>-->
-<!--                <a href="https://docs.miraclesses.top/assist/" class="btn btn-secondary" target="_blank" rel="noopener" style="margin-left: 24px;">-->
-<!--                    查看详情-->
-<!--                </a>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</section>-->
-
-<!-- Preview -->
-<section class="docs-cta" id="preview">
-    <div class="container">
-        <div class="docs-card reveal">
-            <div class="section-label">在线预览</div>
-            <h2 class="section-title">先看看，再决定。</h2>
-            <p class="section-desc">使用演示账号快速体验管理平台的基本功能。</p>
-            <div style="display: flex; align-items: center; justify-content: center; gap: 32px; flex-wrap: wrap; margin-bottom: 32px;">
-                <div style="display: flex; align-items: center; gap: 10px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 24px;">
-                    <span style="font-size: 13px; color: var(--text-tertiary);">用户名</span>
-                    <code style="font-size: 16px; font-weight: 600; color: var(--accent); font-family: 'SF Mono', 'Fira Code', monospace;">demo</code>
-                </div>
-                <div style="display: flex; align-items: center; gap: 10px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 24px;">
-                    <span style="font-size: 13px; color: var(--text-tertiary);">密码</span>
-                    <code style="font-size: 16px; font-weight: 600; color: var(--accent); font-family: 'SF Mono', 'Fira Code', monospace;">demo</code>
-                </div>
-            </div>
-            <a href="https://demo.miraclesses.top" class="btn btn-primary" target="_blank" rel="noopener">
-                点击预览
-            </a>
-        </div>
-    </div>
-</section>
-
-<!-- Docs CTA -->
-<section class="docs-cta" id="docs">
-    <div class="container">
-        <div class="docs-card reveal">
-            <div class="section-label">深度文档</div>
-            <h2 class="section-title">准备好搭建<br>你的服务器了吗？</h2>
-            <p class="section-desc">从环境准备到配置调优，完整的文档体系助你快速上手。</p>
-            <a href="https://docs.miraclesses.top/docs/" class="btn btn-primary" target="_blank" rel="noopener">
-                查看文档
-            </a>
-        </div>
-    </div>
-</section>
-
-<!-- Footer -->
-<footer>
-    <div class="footer-inner">
-        <span class="footer-copy">&copy; 2024&ndash;<span id="currentYear"></span> 饥荒管理平台 · MIT License</span>
-        <div class="footer-partner">
-            <a href="https://hbyidc.com/recommend/OKkxTzgMP6k7" target="_blank" rel="noopener">
-                <img src="img/hbyidc.png" alt="汉堡云">
-            </a>
-            <a href="https://item.taobao.com/item.htm?id=926252505313" target="_blank" rel="noopener">
-                <img src="img/gangtieyunfu.png" alt="钢铁云服">
-            </a>
-        </div>
-        <ul class="footer-links">
-            <li><a href="https://github.com/miracleEverywhere/dst-management-platform-web" target="_blank" rel="noopener">前端</a></li>
-            <li><a href="https://github.com/miracleEverywhere/dst-management-platform-api" target="_blank" rel="noopener">后端</a></li>
-            <li><a href="https://github.com/miracleEverywhere/dst-management-platform-desktop" target="_blank" rel="noopener">桌面应用</a></li>
-            <li><a href="https://docs.miraclesses.top/" target="_blank" rel="noopener">使用指南</a></li>
-        </ul>
-    </div>
-</footer>
+    <footer class="footer">
+        &copy; <span id="currentYear"></span> Miracle
+    </footer>
+</main>
 
 <script>
 (function() {
@@ -692,40 +297,14 @@
         setTheme(current);
     }
 
-    // Load saved theme, default to dark
     var saved = localStorage.getItem('theme');
     if (saved === 'light') {
-      setTheme('light');
+        setTheme('light');
     } else {
-      setTheme('dark');
+        setTheme('dark');
     }
 
     themeToggle.addEventListener('click', toggleTheme);
-
-    // ─── Support Banner Dismiss ───
-    (function() {
-        var banner = document.getElementById('supportBanner');
-        var closeBtn = document.getElementById('bannerClose');
-        var nav = document.getElementById('navbar');
-        var themeToggleBtn = document.getElementById('themeToggle');
-
-        function adjustNavPosition() {
-            var bannerH = banner.classList.contains('dismissed') ? 0 : banner.offsetHeight;
-            nav.style.top = (bannerH + 16) + 'px';
-            themeToggleBtn.style.top = (bannerH + 24) + 'px';
-        }
-
-        document.body.classList.add('banner-visible');
-        adjustNavPosition();
-        window.addEventListener('resize', adjustNavPosition);
-
-        closeBtn.addEventListener('click', function() {
-            banner.classList.add('dismissed');
-            document.body.classList.remove('banner-visible');
-            nav.style.top = '';
-            themeToggleBtn.style.top = '';
-        });
-    })();
 
     // ─── Footer Year ───
     document.getElementById('currentYear').textContent = new Date().getFullYear();
@@ -767,7 +346,6 @@
             this.x += this.speedX;
             this.life++;
             this.opacity -= this.opacitySpeed;
-            // Mouse repulsion
             const dx = this.x - mouseX;
             const dy = this.y - mouseY;
             const dist = Math.sqrt(dx * dx + dy * dy);
@@ -806,33 +384,8 @@
     }
     animate();
 
-    // ─── Navbar Scroll Effect ───
-    const navbar = document.getElementById('navbar');
-    let scrollTicking = false;
-    window.addEventListener('scroll', function() {
-        if (!scrollTicking) {
-            requestAnimationFrame(function() {
-                navbar.classList.toggle('scrolled', window.scrollY > 40);
-                scrollTicking = false;
-            });
-            scrollTicking = true;
-        }
-    }, { passive: true });
-
-    // ─── Scroll Reveal ───
-    const revealEls = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
-    revealEls.forEach(function(el) { observer.observe(el); });
-
-    // ─── Feature Card Mouse Glow ───
-    document.querySelectorAll('.feature-card').forEach(function(card) {
+    // ─── Nav Card Mouse Glow ───
+    document.querySelectorAll('.nav-card').forEach(function(card) {
         card.addEventListener('mousemove', function(e) {
             const rect = card.getBoundingClientRect();
             const x = ((e.clientX - rect.left) / rect.width) * 100;
