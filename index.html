@@ -8,231 +8,596 @@
     <meta name="keywords" content="饥荒, 饥荒管理平台, DMP, 导航, Miracle, Miraclesses, 黑名单, DST, Block, 博客">
     <title>导航页</title>
     <link href="img/favicon.ico" rel="icon">
+
     <style>
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        /* ═══════════════════════════════════════════
+           DESIGN TOKENS
+           ═══════════════════════════════════════════ */
         :root {
-            --bg: #08080a;
-            --bg-card: #111114;
-            --bg-card-hover: #18181d;
-            --border: rgba(255,255,255,.06);
-            --border-hover: rgba(255,255,255,.12);
+            /* Surface */
+            --bg: #000000;
+            --bg-elevated: rgba(255, 255, 255, 0.03);
+            --bg-card: rgba(255, 255, 255, 0.05);
+            --bg-card-hover: rgba(255, 255, 255, 0.09);
+
+            /* Border */
+            --border: rgba(255, 255, 255, 0.07);
+            --border-hover: rgba(255, 255, 255, 0.14);
+            --border-accent: rgba(139, 92, 246, 0.35);
+
+            /* Text */
             --text: #f5f5f7;
-            --text-secondary: #a1a1a6;
-            --text-tertiary: #6e6e73;
-            --accent: #8C57FF;
-            --accent-glow: rgba(140,87,255,.18);
-            --accent-soft: rgba(140,87,255,.08);
-            --glass-highlight: rgba(255,255,255,.14);
-            --glass-base: rgba(255,255,255,.03);
-            --glass-tint: rgba(140,87,255,.07);
-            --glass-edge: rgba(255,255,255,.1);
-            --btn-secondary-bg: rgba(255,255,255,.05);
-            --btn-secondary-hover: rgba(255,255,255,.08);
-            --card-shadow: rgba(0,0,0,.3);
-            --particle-rgb: 140,87,255;
-            --radius-sm: 12px;
-            --radius: 20px;
-            --radius-lg: 28px;
+            --text-secondary: #98989d;
+            --text-tertiary: #5c5c62;
+
+            /* Accent */
+            --accent: #8b5cf6;
+            --accent-soft: rgba(139, 92, 246, 0.08);
+            --accent-glow: rgba(139, 92, 246, 0.18);
+
+            /* Shadow */
+            --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4);
+            --shadow-card-hover: 0 12px 40px rgba(0, 0, 0, 0.7), 0 0 1px rgba(255, 255, 255, 0.1);
+
+            /* Radius */
+            --radius-sm: 10px;
+            --radius: 18px;
+            --radius-lg: 24px;
+
+            /* Orb colors (dark) */
+            --orb-1: rgba(139, 92, 246, 0.12);
+            --orb-2: rgba(59, 130, 246, 0.08);
+            --orb-3: rgba(236, 72, 153, 0.06);
+
+            /* Misc */
+            --glass-blur: 24px;
+            --transition-fast: 200ms;
+            --transition-normal: 400ms;
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --ease-out: cubic-bezier(0.25, 0.1, 0.25, 1);
         }
+
+        /* Light theme */
         [data-theme="light"] {
             --bg: #f5f5f7;
-            --bg-card: #ffffff;
-            --bg-card-hover: #fafafa;
-            --border: rgba(0,0,0,.06);
-            --border-hover: rgba(0,0,0,.12);
+            --bg-elevated: rgba(0, 0, 0, 0.02);
+            --bg-card: rgba(255, 255, 255, 0.7);
+            --bg-card-hover: rgba(255, 255, 255, 0.9);
+            --border: rgba(0, 0, 0, 0.07);
+            --border-hover: rgba(0, 0, 0, 0.14);
+            --border-accent: rgba(139, 92, 246, 0.3);
             --text: #1d1d1f;
             --text-secondary: #6e6e73;
-            --text-tertiary: #a1a1a6;
-            --accent-glow: rgba(140,87,255,.12);
-            --accent-soft: rgba(140,87,255,.06);
-            --glass-highlight: rgba(255,255,255,.65);
-            --glass-base: rgba(255,255,255,.25);
-            --glass-tint: rgba(140,87,255,.05);
-            --glass-edge: rgba(255,255,255,.35);
-            --btn-secondary-bg: rgba(0,0,0,.04);
-            --btn-secondary-hover: rgba(0,0,0,.07);
-            --card-shadow: rgba(0,0,0,.08);
-            --particle-rgb: 120,70,220;
-            color-scheme: light;
+            --text-tertiary: #aeaeb2;
+            --accent-soft: rgba(139, 92, 246, 0.06);
+            --accent-glow: rgba(139, 92, 246, 0.1);
+            --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04);
+            --shadow-card-hover: 0 12px 40px rgba(0, 0, 0, 0.1), 0 0 1px rgba(0, 0, 0, 0.1);
+            --orb-1: rgba(139, 92, 246, 0.08);
+            --orb-2: rgba(59, 130, 246, 0.05);
+            --orb-3: rgba(236, 72, 153, 0.04);
         }
-        html { scroll-behavior: smooth; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
+
+        /* ═══════════════════════════════════════════
+           RESET & BASE
+           ═══════════════════════════════════════════ */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            overflow-x: hidden;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+            "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.47059;
+            letter-spacing: -0.01em;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            transition: background .5s ease, color .5s ease;
-            padding: 24px;
-        }
-        ::selection { background: var(--accent); color: #fff; }
-
-        /* ─── Canvas Particles ─── */
-        #particles-canvas {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; z-index: 0;
+            padding: 48px 24px;
+            transition: background 0.6s var(--ease-out), color 0.6s var(--ease-out);
+            overflow-x: hidden;
+            position: relative;
         }
 
-        /* ─── Theme Toggle ─── */
+        ::selection {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        /* ═══════════════════════════════════════════
+           AMBIENT BACKGROUND ORBS
+           ═══════════════════════════════════════════ */
+        .bg-orbs {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .bg-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(140px);
+            will-change: transform;
+            transition: opacity 0.6s var(--ease-out);
+        }
+
+        .bg-orb-1 {
+            width: 560px;
+            height: 560px;
+            background: var(--orb-1);
+            top: -15%;
+            left: -10%;
+        }
+
+        .bg-orb-2 {
+            width: 480px;
+            height: 480px;
+            background: var(--orb-2);
+            bottom: -20%;
+            right: -8%;
+        }
+
+        .bg-orb-3 {
+            width: 340px;
+            height: 340px;
+            background: var(--orb-3);
+            top: 50%;
+            left: 55%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Subtle grain overlay for texture */
+        .bg-grain {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.015;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+            background-size: 256px 256px;
+        }
+
+        /* ═══════════════════════════════════════════
+           THEME TOGGLE
+           ═══════════════════════════════════════════ */
         .theme-toggle {
-            position: fixed; top: 24px; right: 24px;
-            z-index: 110; width: 40px; height: 40px;
-            border-radius: 50%; border: 1px solid var(--border);
-            background: var(--glass-highlight);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            cursor: pointer; display: flex; align-items: center; justify-content: center;
-            transition: all .4s cubic-bezier(.25,.1,.25,1);
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 100;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: var(--text-secondary);
+            transition:
+                background var(--transition-normal) var(--ease-out),
+                border-color var(--transition-normal) var(--ease-out),
+                transform var(--transition-fast) var(--ease-spring),
+                box-shadow var(--transition-normal) var(--ease-out);
+            box-shadow: var(--shadow-card);
         }
+
         .theme-toggle:hover {
-            border-color: var(--border-hover); color: var(--text);
+            border-color: var(--border-hover);
+            color: var(--text);
             transform: scale(1.08);
+            box-shadow: var(--shadow-card-hover);
         }
-        .theme-toggle svg { width: 18px; height: 18px; transition: transform .5s cubic-bezier(.25,.1,.25,1); }
-        .theme-toggle .icon-sun, .theme-toggle .icon-moon {
-            position: absolute; transition: all .5s cubic-bezier(.25,.1,.25,1);
-        }
-        [data-theme="light"] .theme-toggle .icon-moon { opacity: 0; transform: rotate(90deg) scale(.5); }
-        [data-theme="light"] .theme-toggle .icon-sun { opacity: 1; transform: rotate(0) scale(1); }
-        .theme-toggle .icon-sun { opacity: 0; transform: rotate(-90deg) scale(.5); }
-        .theme-toggle .icon-moon { opacity: 1; transform: rotate(0) scale(1); }
 
-        /* ─── Main Content ─── */
+        .theme-toggle:active {
+            transform: scale(0.93);
+            transition: transform 100ms var(--ease-out);
+        }
+
+        .theme-toggle svg {
+            width: 18px;
+            height: 18px;
+            position: absolute;
+            transition:
+                opacity 0.5s var(--ease-out),
+                transform 0.5s var(--ease-spring);
+        }
+
+        /* Dark: moon visible, sun hidden */
+        .theme-toggle .icon-moon {
+            opacity: 1;
+            transform: rotate(0deg) scale(1);
+        }
+
+        .theme-toggle .icon-sun {
+            opacity: 0;
+            transform: rotate(-90deg) scale(0.3);
+        }
+
+        /* Light: sun visible, moon hidden */
+        [data-theme="light"] .theme-toggle .icon-moon {
+            opacity: 0;
+            transform: rotate(90deg) scale(0.3);
+        }
+
+        [data-theme="light"] .theme-toggle .icon-sun {
+            opacity: 1;
+            transform: rotate(0deg) scale(1);
+        }
+
+        /* ═══════════════════════════════════════════
+           MAIN CONTAINER
+           ═══════════════════════════════════════════ */
         .main {
-            position: relative; z-index: 1;
-            display: flex; flex-direction: column; align-items: center;
-            width: 100%; max-width: 720px;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 680px;
         }
 
-        /* ─── Header ─── */
-        .header {
-            display: flex; flex-direction: column; align-items: center;
-            margin-bottom: 24px;
-        }
-        .header-brand {
-            display: flex; align-items: center; gap: 12px;
-            text-decoration: none; margin-bottom: 12px;
-        }
-        .header-brand img { height: 40px; width: auto; }
-        .header-brand span {
-            color: var(--text); font-weight: 700; font-size: 22px;
-            letter-spacing: -.4px;
-        }
-        .header-tagline {
-            font-size: 14px; color: var(--text-tertiary);
-            letter-spacing: -.1px;
+        /* ═══════════════════════════════════════════
+           HERO
+           ═══════════════════════════════════════════ */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 56px;
+            opacity: 0;
+            transform: translateY(24px);
+            animation: fade-up 0.8s var(--ease-out-expo) 0.1s forwards;
         }
 
-        /* ─── Nav Cards Grid ─── */
+        .hero-title {
+            font-size: 40px;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .hero-tagline {
+            font-size: 15px;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+            color: var(--text-tertiary);
+        }
+
+        /* ═══════════════════════════════════════════
+           NAVIGATION GRID
+           ═══════════════════════════════════════════ */
         .nav-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 16px;
             width: 100%;
         }
+
         .nav-card {
+            position: relative;
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 32px 28px;
-            text-decoration: none; color: inherit;
-            transition: all .4s cubic-bezier(.25,.1,.25,1);
-            display: flex; flex-direction: column; gap: 10px;
-            position: relative; overflow: hidden;
+            padding: 28px 26px;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            overflow: hidden;
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            box-shadow: var(--shadow-card);
+            transition:
+                background var(--transition-normal) var(--ease-out),
+                border-color var(--transition-normal) var(--ease-out),
+                transform 0.5s var(--ease-spring),
+                box-shadow var(--transition-normal) var(--ease-out);
+
+            /* Staggered entrance */
+            opacity: 0;
+            transform: translateY(28px);
+            animation: fade-up 0.7s var(--ease-out-expo) forwards;
         }
+
+        .nav-card:nth-child(1) { animation-delay: 0.2s; }
+        .nav-card:nth-child(2) { animation-delay: 0.3s; }
+        .nav-card:nth-child(3) { animation-delay: 0.4s; }
+        .nav-card:nth-child(4) { animation-delay: 0.5s; }
+
+        /* Card highlight that follows cursor */
         .nav-card::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            background: radial-gradient(500px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), var(--accent-soft), transparent 70%);
-            opacity: 0; transition: opacity .4s ease;
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(
+                600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+                var(--accent-soft),
+                transparent 60%
+            );
+            opacity: 0;
+            transition: opacity 0.4s var(--ease-out);
             z-index: 0;
+            pointer-events: none;
         }
-        .nav-card:hover::before { opacity: 1; }
+
+        .nav-card:hover::before {
+            opacity: 1;
+        }
+
+        /* Top accent line on hover */
         .nav-card::after {
-            content: ''; position: absolute; top: -1px; left: 20px; right: 20px; height: 1px;
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 24px;
+            right: 24px;
+            height: 1px;
             background: linear-gradient(90deg, transparent, var(--accent), transparent);
-            opacity: 0; transition: opacity .4s ease;
+            opacity: 0;
+            transition: opacity 0.5s var(--ease-out);
             z-index: 1;
+            pointer-events: none;
         }
-        .nav-card:hover::after { opacity: 1; }
+
+        .nav-card:hover::after {
+            opacity: 0.7;
+        }
+
         .nav-card:hover {
+            background: var(--bg-card-hover);
             border-color: var(--border-hover);
             transform: translateY(-4px);
-            box-shadow: 0 20px 60px var(--card-shadow);
+            box-shadow: var(--shadow-card-hover);
         }
-        .nav-card > * { position: relative; z-index: 2; }
-        .nav-card .card-icon {
-            width: 44px; height: 44px; border-radius: var(--radius-sm);
-            background: var(--accent-soft); display: flex; align-items: center; justify-content: center;
-            font-size: 20px; color: var(--accent); flex-shrink: 0;
+
+        .nav-card:active {
+            transform: translateY(-1px) scale(0.985);
+            transition: transform 100ms var(--ease-out);
         }
+
+        /* Card content stacking */
+        .nav-card > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Card icon */
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+            background: var(--accent-soft);
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition:
+                background var(--transition-normal) var(--ease-out),
+                transform var(--transition-normal) var(--ease-spring);
+        }
+
+        .nav-card:hover .card-icon {
+            transform: scale(1.06);
+        }
+
+        .card-icon svg {
+            width: 20px;
+            height: 20px;
+            transition: transform var(--transition-normal) var(--ease-spring);
+        }
+
+        .nav-card:hover .card-icon svg {
+            transform: scale(1.08);
+        }
+
+        /* Card title */
         .nav-card h3 {
-            font-size: 18px; font-weight: 600; letter-spacing: -.3px;
+            font-size: 17px;
+            font-weight: 600;
+            letter-spacing: -0.015em;
+            line-height: 1.3;
+            color: var(--text);
         }
-        .nav-card .card-desc {
-            font-size: 13px; color: var(--text-secondary); line-height: 1.55;
-            letter-spacing: -.1px;
-        }
-        .nav-card .card-domain {
-            font-size: 12px; color: var(--text-tertiary); letter-spacing: -.1px;
-            margin-top: auto; padding-top: 4px;
-            transition: color .3s ease;
-        }
-        .nav-card:hover .card-domain { color: var(--accent); }
 
-        /* ─── Footer ─── */
+        /* Card description */
+        .card-desc {
+            font-size: 13px;
+            font-weight: 400;
+            letter-spacing: -0.005em;
+            line-height: 1.5;
+            color: var(--text-secondary);
+        }
+
+        /* Card domain badge */
+        .card-domain {
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0;
+            color: var(--text-tertiary);
+            margin-top: auto;
+            padding-top: 6px;
+            transition: color var(--transition-normal) var(--ease-out);
+        }
+
+        .nav-card:hover .card-domain {
+            color: var(--accent);
+        }
+
+        /* ═══════════════════════════════════════════
+           FOOTER
+           ═══════════════════════════════════════════ */
         .footer {
-            position: relative; z-index: 1;
-            margin-top: 48px;
-            font-size: 13px; color: var(--text-tertiary);
-            letter-spacing: -.1px; text-align: center;
+            position: relative;
+            z-index: 1;
+            margin-top: 56px;
+            font-size: 12px;
+            font-weight: 400;
+            letter-spacing: -0.005em;
+            color: var(--text-tertiary);
+            text-align: center;
+            opacity: 0;
+            animation: fade-up 0.7s var(--ease-out-expo) 0.6s forwards;
         }
 
-        /* ─── Responsive ─── */
+        /* ═══════════════════════════════════════════
+           KEYFRAMES
+           ═══════════════════════════════════════════ */
+        @keyframes fade-up {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ═══════════════════════════════════════════
+           RESPONSIVE
+           ═══════════════════════════════════════════ */
         @media (max-width: 600px) {
-            .nav-grid { grid-template-columns: 1fr; }
-            .nav-card { padding: 28px 24px; }
-            .header-brand span { font-size: 19px; }
-            .header { margin-bottom: 36px; }
-            body { padding: 60px 20px 40px; justify-content: flex-start; padding-top: 80px; }
+            body {
+                padding: 60px 16px 40px;
+                justify-content: flex-start;
+                padding-top: 80px;
+            }
+
+            .nav-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .nav-card {
+                padding: 24px 20px;
+            }
+
+            .hero {
+                margin-bottom: 40px;
+            }
+
+            .hero-title {
+                font-size: 32px;
+            }
+
+            .hero-tagline {
+                font-size: 14px;
+            }
+
+            .bg-orb-1 {
+                width: 360px;
+                height: 360px;
+                top: -20%;
+                left: -30%;
+            }
+
+            .bg-orb-2 {
+                width: 300px;
+                height: 300px;
+                bottom: -15%;
+                right: -25%;
+            }
+
+            .bg-orb-3 {
+                width: 220px;
+                height: 220px;
+            }
+        }
+
+        /* ═══════════════════════════════════════════
+           REDUCED MOTION
+           ═══════════════════════════════════════════ */
+        @media (prefers-reduced-motion: reduce) {
+            .nav-card,
+            .hero,
+            .footer {
+                animation: none;
+                opacity: 1;
+                transform: none;
+            }
+
+            .nav-card:hover {
+                transform: none;
+            }
+
+            .nav-card:hover::before {
+                opacity: 0;
+            }
         }
     </style>
 </head>
 <body>
 
+<!-- Ambient background orbs -->
+<div class="bg-orbs" aria-hidden="true">
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+</div>
+
+<!-- Subtle grain texture -->
+<div class="bg-grain" aria-hidden="true"></div>
+
+<!-- Theme toggle -->
 <button class="theme-toggle" id="themeToggle" aria-label="切换明暗主题">
     <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        <circle cx="12" cy="12" r="5"/>
+        <line x1="12" y1="1" x2="12" y2="3"/>
+        <line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/>
+        <line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
     </svg>
     <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
     </svg>
 </button>
 
-<canvas id="particles-canvas"></canvas>
-
+<!-- Main content -->
 <main class="main">
-    <header class="header">
-        <a href="#" class="header-brand">
-            <span>Miracle</span>
-        </a>
-        <p class="header-tagline">相关站点</p>
+    <header class="hero">
+        <h1 class="hero-title">导航页</h1>
+        <p class="hero-tagline">相关站点</p>
     </header>
 
     <div class="nav-grid">
         <!-- DMP 官网 -->
         <a href="https://dmp.miraclesses.top" class="nav-card" target="_blank" rel="noopener">
             <div class="card-icon">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+                    <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
             </div>
-            <h3>饥荒管理平台官网</h3>
+            <h3>饥荒管理平台</h3>
             <p class="card-desc">一站式饥荒专用服务器管理方案，一键开服，智能运维。</p>
             <span class="card-domain">dmp.miraclesses.top</span>
         </a>
@@ -240,9 +605,12 @@
         <!-- 文档 -->
         <a href="https://docs.miraclesses.top" class="nav-card" target="_blank" rel="noopener">
             <div class="card-icon">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19.5A2.5 2.5 0 016.5 17H20"/>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>
+                </svg>
             </div>
-            <h3>饥荒管理平台文档</h3>
+            <h3>使用文档</h3>
             <p class="card-desc">饥荒管理平台使用指南与常见问题解答。</p>
             <span class="card-domain">docs.miraclesses.top</span>
         </a>
@@ -250,19 +618,24 @@
         <!-- 黑名单 -->
         <a href="https://dst-block.miraclesses.top" class="nav-card" target="_blank" rel="noopener">
             <div class="card-icon">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
             </div>
             <h3>DST Block</h3>
-            <p class="card-desc">DST Block 是一个社区驱动的饥荒联机版黑名单管理平台。</p>
+            <p class="card-desc">社区驱动的饥荒联机版黑名单管理平台。</p>
             <span class="card-domain">dst-block.miraclesses.top</span>
         </a>
 
         <!-- 博客 -->
         <a href="https://blog.miraclesses.top" class="nav-card" target="_blank" rel="noopener">
             <div class="card-icon">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 20h9"/>
+                    <path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                </svg>
             </div>
-            <h3>我的博客</h3>
+            <h3>博客</h3>
             <p class="card-desc">一个破破烂烂的垃圾堆。</p>
             <span class="card-domain">blog.miraclesses.top</span>
         </a>
@@ -274,13 +647,14 @@
 </main>
 
 <script>
-(function() {
+(function () {
     'use strict';
 
-    // ─── Theme Toggle ───
+    /* ═══════════════════════════════════════
+       THEME
+       ═══════════════════════════════════════ */
     const html = document.documentElement;
     const themeToggle = document.getElementById('themeToggle');
-    let particleRgb = getComputedStyle(html).getPropertyValue('--particle-rgb').trim();
 
     function setTheme(theme) {
         if (theme === 'light') {
@@ -288,110 +662,63 @@
         } else {
             html.removeAttribute('data-theme');
         }
-        particleRgb = getComputedStyle(html).getPropertyValue('--particle-rgb').trim();
-        localStorage.setItem('theme', theme);
+        try {
+            localStorage.setItem('theme', theme);
+        } catch (_) { /* quota exceeded, ignore */ }
     }
 
     function toggleTheme() {
-        var current = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-        setTheme(current);
+        const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+        setTheme(next);
     }
 
-    var saved = localStorage.getItem('theme');
-    if (saved === 'light') {
-        setTheme('light');
-    } else {
-        setTheme('dark');
-    }
+    const saved = (function () {
+        try { return localStorage.getItem('theme'); } catch (_) { return null; }
+    })();
+    setTheme(saved === 'light' ? 'light' : 'dark');
 
     themeToggle.addEventListener('click', toggleTheme);
 
-    // ─── Footer Year ───
+    /* ═══════════════════════════════════════
+       FOOTER YEAR
+       ═══════════════════════════════════════ */
     document.getElementById('currentYear').textContent = new Date().getFullYear();
 
-    // ─── Floating Ember Particles ───
-    const canvas = document.getElementById('particles-canvas');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-    let animationId;
-    let mouseX = -100, mouseY = -100;
-
-    function resize() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resize);
-    resize();
-
-    class Particle {
-        constructor() {
-            this.reset(true);
-        }
-        reset(init) {
-            this.x = Math.random() * canvas.width;
-            this.y = init ? Math.random() * canvas.height : canvas.height + 20;
-            this.size = Math.random() * 2 + 0.8;
-            this.speedY = -(Math.random() * 0.5 + 0.2);
-            this.speedX = (Math.random() - 0.5) * 0.4;
-            this.opacity = Math.random() * 0.5 + 0.15;
-            this.opacitySpeed = Math.random() * 0.004 + 0.002;
-            this.life = 0;
-            this.maxLife = Math.random() * 400 + 300;
-            this.wobble = Math.random() * Math.PI * 2;
-            this.wobbleSpeed = Math.random() * 0.02 + 0.005;
-        }
-        update() {
-            this.wobble += this.wobbleSpeed;
-            this.y += this.speedY + Math.sin(this.wobble) * 0.3;
-            this.x += this.speedX;
-            this.life++;
-            this.opacity -= this.opacitySpeed;
-            const dx = this.x - mouseX;
-            const dy = this.y - mouseY;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < 120) {
-                const force = (120 - dist) / 120 * 0.8;
-                this.x += (dx / dist) * force;
-                this.y += (dy / dist) * force;
-            }
-            if (this.life > this.maxLife || this.opacity <= 0 || this.y < -20) {
-                this.reset(false);
-            }
-        }
-        draw(ctx) {
-            ctx.beginPath();
-            const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size * 2);
-            gradient.addColorStop(0, `rgba(${particleRgb},${this.opacity})`);
-            gradient.addColorStop(1, `rgba(${particleRgb},0)`);
-            ctx.fillStyle = gradient;
-            ctx.arc(this.x, this.y, this.size * 2, 0, Math.PI * 2);
-            ctx.fill();
-        }
-    }
-
-    const PARTICLE_COUNT = 55;
-    for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(new Particle());
-
-    document.addEventListener('mousemove', function(e) {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-    });
-
-    function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        particles.forEach(function(p) { p.update(); p.draw(ctx); });
-        animationId = requestAnimationFrame(animate);
-    }
-    animate();
-
-    // ─── Nav Card Mouse Glow ───
-    document.querySelectorAll('.nav-card').forEach(function(card) {
-        card.addEventListener('mousemove', function(e) {
+    /* ═══════════════════════════════════════
+       CARD CURSOR GLOW
+       ═══════════════════════════════════════ */
+    document.querySelectorAll('.nav-card').forEach(function (card) {
+        card.addEventListener('mousemove', function (e) {
             const rect = card.getBoundingClientRect();
             const x = ((e.clientX - rect.left) / rect.width) * 100;
             const y = ((e.clientY - rect.top) / rect.height) * 100;
             card.style.setProperty('--mouse-x', x + '%');
             card.style.setProperty('--mouse-y', y + '%');
+        });
+    });
+
+    /* ═══════════════════════════════════════
+       PARALLAX ORBS — subtle mouse response
+       ═══════════════════════════════════════ */
+    const orbs = document.querySelectorAll('.bg-orb');
+    let orbRaf = null;
+
+    document.addEventListener('mousemove', function (e) {
+        if (orbRaf) return;
+        orbRaf = requestAnimationFrame(function () {
+            orbRaf = null;
+            const x = (e.clientX / window.innerWidth - 0.5) * 2;  // -1…1
+            const y = (e.clientY / window.innerHeight - 0.5) * 2;
+
+            if (orbs[0]) {
+                orbs[0].style.transform = 'translate(' + (x * 24) + 'px, ' + (y * 24) + 'px)';
+            }
+            if (orbs[1]) {
+                orbs[1].style.transform = 'translate(' + (x * -18) + 'px, ' + (y * -18) + 'px)';
+            }
+            if (orbs[2]) {
+                orbs[2].style.transform = 'translate(' + (x * 10) + 'px, ' + (y * 10) + 'px)';
+            }
         });
     });
 })();
