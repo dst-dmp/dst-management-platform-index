@@ -265,9 +265,9 @@
             flex-direction: column;
             align-items: center;
             margin-bottom: 56px;
-            opacity: 0;
-            transform: translateY(24px);
-            animation: fade-up 0.8s var(--ease-out-expo) 0.1s forwards;
+            /* Rest state is the visible one; `backwards` fills the hidden
+               `from` state only until the animation starts. */
+            animation: fade-up 0.8s var(--ease-out-expo) 0.1s backwards;
         }
 
         .hero-title {
@@ -317,16 +317,13 @@
                 transform 0.5s var(--ease-spring),
                 box-shadow var(--transition-normal) var(--ease-out);
 
-            /* Staggered entrance */
-            opacity: 0;
-            transform: translateY(28px);
-            animation: fade-up 0.7s var(--ease-out-expo) forwards;
+            /* Staggered entrance. Each card carries its own --i index, so the
+               order follows the DOM automatically; `backwards` releases the
+               transform once the animation ends, which keeps the hover lift
+               and the transform transition working. */
+            animation: fade-up 0.7s var(--ease-out-expo) backwards;
+            animation-delay: calc(0.2s + var(--i, 0) * 0.1s);
         }
-
-        .nav-card:nth-child(1) { animation-delay: 0.2s; }
-        .nav-card:nth-child(2) { animation-delay: 0.3s; }
-        .nav-card:nth-child(3) { animation-delay: 0.4s; }
-        .nav-card:nth-child(4) { animation-delay: 0.5s; }
 
         /* Card highlight that follows cursor */
         .nav-card::before {
@@ -460,8 +457,8 @@
             letter-spacing: -0.005em;
             color: var(--text-tertiary);
             text-align: center;
-            opacity: 0;
-            animation: fade-up 0.7s var(--ease-out-expo) 0.6s forwards;
+            /* Lands after the last card has started its entrance. */
+            animation: fade-up 0.7s var(--ease-out-expo) 0.8s backwards;
         }
 
         /* ═══════════════════════════════════════════
@@ -590,7 +587,7 @@
 
     <div class="nav-grid">
         <!-- DMP 官网 -->
-        <a href="https://dmp.miraclesses.top" class="nav-card" target="_blank" rel="noopener">
+        <a href="https://dmp.miraclesses.top" class="nav-card" style="--i: 0" target="_blank" rel="noopener">
             <div class="card-icon">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
@@ -603,7 +600,7 @@
         </a>
 
         <!-- 文档 -->
-        <a href="https://docs.miraclesses.top" class="nav-card" target="_blank" rel="noopener">
+        <a href="https://docs.miraclesses.top" class="nav-card" style="--i: 1" target="_blank" rel="noopener">
             <div class="card-icon">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M4 19.5A2.5 2.5 0 016.5 17H20"/>
@@ -616,7 +613,7 @@
         </a>
 
         <!-- 黑名单 -->
-        <a href="https://dst-block.miraclesses.top" class="nav-card" target="_blank" rel="noopener">
+        <a href="https://dst-block.miraclesses.top" class="nav-card" style="--i: 2" target="_blank" rel="noopener">
             <div class="card-icon">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
@@ -628,7 +625,7 @@
         </a>
 
         <!-- 房间搜索 -->
-        <a href="https://dst-search.miraclesses.top" class="nav-card" target="_blank" rel="noopener">
+        <a href="https://dst-search.miraclesses.top" class="nav-card" style="--i: 3" target="_blank" rel="noopener">
             <div class="card-icon">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="11" cy="11" r="8"/>
@@ -641,7 +638,7 @@
         </a>
 
         <!-- 博客 -->
-        <a href="https://blog.miraclesses.top" class="nav-card" target="_blank" rel="noopener">
+        <a href="https://blog.miraclesses.top" class="nav-card" style="--i: 4" target="_blank" rel="noopener">
             <div class="card-icon">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M12 20h9"/>
@@ -654,14 +651,14 @@
         </a>
 
         <!-- 状态 -->
-        <a href="https://status.miraclesses.top" class="nav-card" target="_blank" rel="noopener">
+        <a href="https://status.miraclesses.top" class="nav-card" style="--i: 5" target="_blank" rel="noopener">
             <div class="card-icon">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
                 </svg>
             </div>
             <h3>运行状态</h3>
-            <p class="card-desc">查看各个系统的运行状态</p>
+            <p class="card-desc">查看各个系统的运行状态。</p>
             <span class="card-domain">status.miraclesses.top</span>
         </a>
     </div>
