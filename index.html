@@ -8,12 +8,43 @@
     <meta name="keywords" content="饥荒, 饥荒管理平台, DMP, 导航, Miracle, Miraclesses, 黑名单, DST, Block, 博客">
     <title>导航页</title>
     <link href="img/favicon.ico" rel="icon">
+    <meta name="theme-color" content="#000000" id="themeColor">
+
+    <script>
+        /* Resolve the theme before first paint to avoid a flash of the wrong theme. */
+        (function () {
+            var MODES = ['light', 'dark', 'system'];
+            var mode = null;
+            try { mode = localStorage.getItem('theme-mode'); } catch (_) { /* ignore */ }
+            if (MODES.indexOf(mode) === -1) {
+                /* Migrate the legacy 'theme' key (light/dark only). */
+                try { mode = localStorage.getItem('theme'); } catch (_) { /* ignore */ }
+            }
+            if (MODES.indexOf(mode) === -1) mode = 'system';
+
+            var systemDark = window.matchMedia
+                ? window.matchMedia('(prefers-color-scheme: dark)')
+                : null;
+            var resolved = mode === 'system'
+                ? (systemDark && systemDark.matches ? 'dark' : 'light')
+                : mode;
+
+            var root = document.documentElement;
+            root.setAttribute('data-theme-mode', mode);
+            if (resolved === 'light') root.setAttribute('data-theme', 'light');
+
+            var meta = document.getElementById('themeColor');
+            if (meta) meta.setAttribute('content', resolved === 'light' ? '#f5f5f7' : '#000000');
+        })();
+    </script>
 
     <style>
         /* ═══════════════════════════════════════════
            DESIGN TOKENS
            ═══════════════════════════════════════════ */
         :root {
+            color-scheme: dark;
+
             /* Surface */
             --bg: #000000;
             --bg-elevated: rgba(255, 255, 255, 0.03);
@@ -60,6 +91,7 @@
 
         /* Light theme */
         [data-theme="light"] {
+            color-scheme: light;
             --bg: #f5f5f7;
             --bg-elevated: rgba(0, 0, 0, 0.02);
             --bg-card: rgba(255, 255, 255, 0.7);
@@ -133,7 +165,9 @@
             border-radius: 50%;
             filter: blur(140px);
             will-change: transform;
-            transition: opacity 0.6s var(--ease-out);
+            transition:
+                background 0.6s var(--ease-out),
+                opacity 0.6s var(--ease-out);
         }
 
         .bg-orb-1 {
@@ -176,11 +210,15 @@
         /* ═══════════════════════════════════════════
            THEME TOGGLE
            ═══════════════════════════════════════════ */
-        .theme-toggle {
+        .theme-control {
             position: fixed;
             top: 24px;
             right: 24px;
             z-index: 100;
+        }
+
+        .theme-toggle {
+            position: relative;
             width: 40px;
             height: 40px;
             border-radius: 50%;
@@ -213,33 +251,64 @@
             transition: transform 100ms var(--ease-out);
         }
 
+        .theme-toggle:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 3px;
+        }
+
+        /* Mode hint pill */
+        .theme-tooltip {
+            position: absolute;
+            top: 50%;
+            right: calc(100% + 10px);
+            transform: translateY(-50%) translateX(6px);
+            padding: 6px 10px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            color: var(--text-secondary);
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            box-shadow: var(--shadow-card);
+            transition:
+                opacity var(--transition-fast) var(--ease-out),
+                transform var(--transition-fast) var(--ease-out);
+        }
+
+        .theme-control:hover .theme-tooltip,
+        .theme-control:focus-within .theme-tooltip,
+        .theme-tooltip.is-visible {
+            opacity: 1;
+            transform: translateY(-50%) translateX(0);
+        }
+
         .theme-toggle svg {
             width: 18px;
             height: 18px;
             position: absolute;
+            opacity: 0;
+            transform: rotate(-90deg) scale(0.3);
             transition:
                 opacity 0.5s var(--ease-out),
                 transform 0.5s var(--ease-spring);
         }
 
-        /* Dark: moon visible, sun hidden */
-        .theme-toggle .icon-moon {
+        /* Show the icon that matches the active mode */
+        [data-theme-mode="light"] .theme-toggle .icon-sun,
+        [data-theme-mode="dark"] .theme-toggle .icon-moon,
+        [data-theme-mode="system"] .theme-toggle .icon-auto {
             opacity: 1;
             transform: rotate(0deg) scale(1);
         }
 
-        .theme-toggle .icon-sun {
-            opacity: 0;
-            transform: rotate(-90deg) scale(0.3);
-        }
-
-        /* Light: sun visible, moon hidden */
-        [data-theme="light"] .theme-toggle .icon-moon {
-            opacity: 0;
-            transform: rotate(90deg) scale(0.3);
-        }
-
-        [data-theme="light"] .theme-toggle .icon-sun {
+        /* Fallback when the mode attribute is missing (JS disabled) */
+        html:not([data-theme-mode]) .theme-toggle .icon-moon {
             opacity: 1;
             transform: rotate(0deg) scale(1);
         }
@@ -545,6 +614,11 @@
             .nav-card:hover::before {
                 opacity: 0;
             }
+
+            .theme-toggle svg,
+            .theme-tooltip {
+                transition: none;
+            }
         }
     </style>
 </head>
@@ -561,22 +635,31 @@
 <div class="bg-grain" aria-hidden="true"></div>
 
 <!-- Theme toggle -->
-<button class="theme-toggle" id="themeToggle" aria-label="切换明暗主题">
-    <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="5"/>
-        <line x1="12" y1="1" x2="12" y2="3"/>
-        <line x1="12" y1="21" x2="12" y2="23"/>
-        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-        <line x1="1" y1="12" x2="3" y2="12"/>
-        <line x1="21" y1="12" x2="23" y2="12"/>
-        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-    </svg>
-    <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
-    </svg>
-</button>
+<div class="theme-control">
+    <button class="theme-toggle" id="themeToggle" type="button"
+            aria-label="明暗主题：跟随系统（点击切换）">
+        <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/>
+            <line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/>
+            <line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+        <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+        </svg>
+        <svg class="icon-auto" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+            <line x1="8" y1="21" x2="16" y2="21"/>
+            <line x1="12" y1="17" x2="12" y2="21"/>
+        </svg>
+    </button>
+    <span class="theme-tooltip" id="themeTooltip" role="status" aria-live="polite">跟随系统</span>
+</div>
 
 <!-- Main content -->
 <main class="main">
@@ -686,33 +769,89 @@
     'use strict';
 
     /* ═══════════════════════════════════════
-       THEME
+       THEME — light / dark / follow system
        ═══════════════════════════════════════ */
     const html = document.documentElement;
     const themeToggle = document.getElementById('themeToggle');
+    const themeTooltip = document.getElementById('themeTooltip');
+    const themeColorMeta = document.getElementById('themeColor');
+    const systemDark = window.matchMedia
+        ? window.matchMedia('(prefers-color-scheme: dark)')
+        : null;
 
-    function setTheme(theme) {
-        if (theme === 'light') {
+    const THEME_MODES = ['light', 'dark', 'system'];
+    const THEME_LABELS = { light: '浅色', dark: '深色', system: '跟随系统' };
+    let tooltipTimer = null;
+
+    function currentMode() {
+        const mode = html.getAttribute('data-theme-mode');
+        return THEME_MODES.indexOf(mode) === -1 ? 'system' : mode;
+    }
+
+    function resolveTheme(mode) {
+        if (mode === 'system') {
+            return systemDark && systemDark.matches ? 'dark' : 'light';
+        }
+        return mode;
+    }
+
+    function applyTheme(mode) {
+        if (THEME_MODES.indexOf(mode) === -1) mode = 'system';
+        const resolved = resolveTheme(mode);
+
+        html.setAttribute('data-theme-mode', mode);
+        if (resolved === 'light') {
             html.setAttribute('data-theme', 'light');
         } else {
             html.removeAttribute('data-theme');
         }
+
+        const label = THEME_LABELS[mode];
+        const hint = '明暗主题：' + label + '（点击切换）';
+        themeToggle.setAttribute('aria-label', hint);
+        if (themeTooltip.textContent !== label) themeTooltip.textContent = label;
+
+        if (themeColorMeta) {
+            themeColorMeta.setAttribute('content', resolved === 'light' ? '#f5f5f7' : '#000000');
+        }
+
         try {
-            localStorage.setItem('theme', theme);
-        } catch (_) { /* quota exceeded, ignore */ }
+            localStorage.setItem('theme-mode', mode);
+            localStorage.removeItem('theme');
+        } catch (_) { /* storage unavailable, ignore */ }
     }
 
-    function toggleTheme() {
-        const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-        setTheme(next);
+    function nextMode() {
+        /* light → dark → system → light … */
+        return THEME_MODES[(THEME_MODES.indexOf(currentMode()) + 1) % THEME_MODES.length];
     }
 
-    const saved = (function () {
-        try { return localStorage.getItem('theme'); } catch (_) { return null; }
-    })();
-    setTheme(saved === 'light' ? 'light' : 'dark');
+    function flashTooltip() {
+        themeTooltip.classList.add('is-visible');
+        clearTimeout(tooltipTimer);
+        tooltipTimer = setTimeout(function () {
+            themeTooltip.classList.remove('is-visible');
+        }, 1400);
+    }
 
-    themeToggle.addEventListener('click', toggleTheme);
+    themeToggle.addEventListener('click', function () {
+        applyTheme(nextMode());
+        flashTooltip();
+    });
+
+    function syncWithSystem() {
+        if (currentMode() === 'system') applyTheme('system');
+    }
+
+    if (systemDark) {
+        if (typeof systemDark.addEventListener === 'function') {
+            systemDark.addEventListener('change', syncWithSystem);
+        } else if (typeof systemDark.addListener === 'function') {
+            systemDark.addListener(syncWithSystem);  // legacy Safari
+        }
+    }
+
+    applyTheme(currentMode());
 
     /* ═══════════════════════════════════════
        FOOTER YEAR
