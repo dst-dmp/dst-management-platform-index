@@ -288,7 +288,8 @@
             transform: translateY(-50%) translateX(0);
         }
 
-        .theme-toggle svg {
+        .theme-toggle svg,
+        .theme-toggle .icon-auto {
             width: 18px;
             height: 18px;
             position: absolute;
@@ -297,6 +298,13 @@
             transition:
                 opacity 0.5s var(--ease-out),
                 transform 0.5s var(--ease-spring);
+        }
+
+        /* System icon comes from an image asset, tinted with currentColor */
+        .theme-toggle .icon-auto {
+            background-color: currentColor;
+            -webkit-mask: url("img/dmp-theme-auto.svg") center / contain no-repeat;
+            mask: url("img/dmp-theme-auto.svg") center / contain no-repeat;
         }
 
         /* Show the icon that matches the active mode */
@@ -616,6 +624,7 @@
             }
 
             .theme-toggle svg,
+            .theme-toggle .icon-auto,
             .theme-tooltip {
                 transition: none;
             }
@@ -652,11 +661,7 @@
         <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
         </svg>
-        <svg class="icon-auto" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
-            <line x1="8" y1="21" x2="16" y2="21"/>
-            <line x1="12" y1="17" x2="12" y2="21"/>
-        </svg>
+        <span class="icon-auto" aria-hidden="true"></span>
     </button>
     <span class="theme-tooltip" id="themeTooltip" role="status" aria-live="polite">跟随系统</span>
 </div>
